@@ -1,8 +1,8 @@
 namespace RRU;
 
 /// <summary>
-/// This resource's purpose is to allow communication between various parts of the
-/// application without needing direct references to one another.
+/// This resource's purpose is to allow communication between various parts 
+/// of the application without needing direct references to one another.
 /// </summary>
 [GlobalClass]
 public sealed partial class GameState : Resource
@@ -10,8 +10,8 @@ public sealed partial class GameState : Resource
     public event Action<ResourceDict> ResourcesChanged;
     public event Action<JobDict> JobsChanged;
 
-    [Export] TechDataService dataService;
     [Export] public JobData[] JobData;
+    [Export] TechDataService dataService;
 
     public int Raccoons { get; set; } = 30;
 
@@ -25,61 +25,37 @@ public sealed partial class GameState : Resource
 
     public GameState()
     {
-        Jobs = new();
-        Resources = new();
-        Structures = new();
+        Jobs = new Dictionary<JobType, int>();
+        Resources = new Dictionary<ResourceType, double>();
+        Structures = new Dictionary<StructureType, int>();
 
-        // Performance cost should be negligible since this should only
-        // be called once.
-        // Using this should be more future-proof as the previous
+        // Performance cost should be negligible since initializing all the
+        // dictionaries like this should only be called once.
+        // Using this way should be more future-proof as the previous
         // implementation requires someone to update each dictionary
         // whenever a new type is added.
 
         jobTypes = (JobType[]) Enum.GetValues(typeof(JobType));
         resourceTypes = (ResourceType[]) Enum.GetValues(typeof(ResourceType));
         structureTypes = (StructureType[]) Enum.GetValues(typeof(StructureType));
+        
+        for (int i = 0; i < jobTypes.Length; i++)
+            Jobs[jobTypes[i]] = 0;
 
-        // Initialise everything in a single pass
-        int l = Math.Max(
-            jobTypes.Length,
-            Math.Max(resourceTypes.Length, structureTypes.Length)
-        );
+        for (int i = 0; i < resourceTypes.Length; i++)
+            Resources[resourceTypes[i]] = 0;
 
-        for (int i = 0; i < l; ++i)
-        {
-            if (i < jobTypes.Length)
-            {
-                Jobs[jobTypes[i]] = 0;
-            }
-
-            if (i < resourceTypes.Length)
-            {
-                Resources[resourceTypes[i]] = 0;
-            }
-
-            if (i < structureTypes.Length)
-            {
-                Structures[structureTypes[i]] = 0;
-            }
-        }
+        for (int i = 0; i < structureTypes.Length; i++)
+            Structures[structureTypes[i]] = 0;
     }
 
-    public void UpdateResources()
-    {
-        ResourcesChanged?.Invoke(Resources);
-    }
-
-    public void UpdateJobs()
-    {
-        JobsChanged?.Invoke(Jobs);
-    }
+    public void UpdateResources() => ResourcesChanged?.Invoke(Resources);
+    public void UpdateJobs() => JobsChanged?.Invoke(Jobs);
 
     /// Resources ///
 
-    public void GetResourceTypes(ref ReadOnlySpan<ResourceType> types)
-    {
+    public void GetResourceTypes(ref ReadOnlySpan<ResourceType> types) =>
         types = resourceTypes;
-    }
 
     public bool HasResource(ResourceType type, double amount)
     {
@@ -91,10 +67,8 @@ public sealed partial class GameState : Resource
 
     /// Jobs ///
 
-    public void GetJobTypes(ref ReadOnlySpan<JobType> types)
-    {
+    public void GetJobTypes(ref ReadOnlySpan<JobType> types) =>
         types = jobTypes;
-    }
 
     public bool AddJob(JobType job)
     {
@@ -120,10 +94,8 @@ public sealed partial class GameState : Resource
 
     /// Structures ///
 
-    public void GetStructureTypes(ref ReadOnlySpan<StructureType> types)
-    {
+    public void GetStructureTypes(ref ReadOnlySpan<StructureType> types) =>
         types = structureTypes;
-    }
 
     /// Upgrades ///
 
