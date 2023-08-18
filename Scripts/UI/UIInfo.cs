@@ -53,7 +53,7 @@ public partial class UIInfo : Node
             if (!resourceLabels.TryGetValue(type, out Label label))
                 continue;
 
-            label.Text = $"{gameState.Resources[type]:0.00}";
+            label.Text = Utils.RoundGameValue(gameState.Resources[type]);
         }
     }
 
