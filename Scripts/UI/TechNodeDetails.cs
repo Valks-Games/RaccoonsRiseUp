@@ -60,13 +60,16 @@ public sealed partial class TechNodeDetails : Control
         if (info == null)
             return;
 
-        updateTick += (float) delta;
+        updateTick += (float)delta;
 
+        // Only update the script every 0.5 or more seconds
         if (updateTick < 0.5f)
             return;
 
         // Periodically check for material requirements;
         UpdateResearchButtonState(dataService.IsResearched(info.Id));
+
+        // Reset the update tick
         updateTick = 0.0f;
     }
 
@@ -90,11 +93,13 @@ public sealed partial class TechNodeDetails : Control
     void SetResearchState(bool isResearched)
     {
         UpdateResearchButtonState(isResearched);
-        labelStatus.Text = isResearched ? Tr("RESEARCHED") : Tr("NOT_RESEARCHED");
+        labelStatus.Text = isResearched ? 
+            Tr("RESEARCHED") : Tr("NOT_RESEARCHED");
     }
 
     void ClearListView(Control view)
     {
+        // This array loops from (count - 1) and goes to 0
         for (int i = view.GetChildCount(); i --> 0;)
             view.GetChild(i).QueueFree();
     }
@@ -149,62 +154,59 @@ public sealed partial class TechNodeDetails : Control
             Math.Max(requirements.Length, modifiers.Length)
         );
 
-        for (int i = 0; i < l; ++i)
-        {
-            UpdateRequirements(i, requirements);
-            UpdateCost(i, cost);
-            UpdateModifiers(i, modifiers);
-        }
+        UpdateRequirements(requirements);
+        UpdateCost(cost);
+        UpdateModifiers(modifiers);
     }
 
-    void UpdateRequirements(int i, ReadOnlySpan<string> requirements)
+    void UpdateRequirements(ReadOnlySpan<string> requirements)
     {
-        if (i >= requirements.Length)
-            return;
-
-        TechUpgradeInfo requirementInfo =
+        for (int i = 0; i < requirements.Length; i++)
+        {
+            TechUpgradeInfo requirementInfo =
             dataService.GetInfoForId(requirements[i]);
 
-        AppendListItem(
-            view: requirementsView,
-            text: $"* {requirementInfo.DisplayName}"
-        );
-    }
-
-    void UpdateCost(int i , ReadOnlySpan<ResourceRequirement> cost)
-    {
-        if (i >= cost.Length)
-            return;
-
-        AppendListItem(
-            view: costView,
-            text: $"* {cost[i].Type} x{cost[i].Amount}"
-        );
-    }
-
-    void UpdateModifiers(int i, ReadOnlySpan<ResourceModifierDefinition> modifiers)
-    {
-        if (i >= modifiers.Length)
-            return;
-
-        string modLabelText = null;
-
-        switch (modifiers[i].ModType)
-        {
-            case ResourceModifierType.Additive:
-                modLabelText =
-                    $"* {modifiers[i].TargetResource} " +
-                    $"Output + {modifiers[i].ModValue}";
-                break;
-
-            case ResourceModifierType.Multiplicative:
-                modLabelText =
-                    $"* {modifiers[i].TargetResource} " +
-                    $"Output + {modifiers[i].ModValue * 100.0:0.0} %";
-                break;
+            AppendListItem(
+                view: requirementsView,
+                text: $"* {requirementInfo.DisplayName}"
+            );
         }
+    }
 
-        AppendListItem(modifiersView, modLabelText);
+    void UpdateCost(ReadOnlySpan<ResourceRequirement> cost)
+    {
+        for (int i = 0; i < cost.Length; i++)
+        {
+            AppendListItem(
+                view: costView,
+                text: $"* {cost[i].Type} x{cost[i].Amount}"
+            );
+        }
+    }
+
+    void UpdateModifiers(ReadOnlySpan<ResourceModifierDefinition> modifiers)
+    {
+        for (int i = 0; i < modifiers.Length; i++)
+        {
+            string modLabelText = null;
+
+            switch (modifiers[i].ModType)
+            {
+                case ResourceModifierType.Additive:
+                    modLabelText =
+                        $"* {modifiers[i].TargetResource} " +
+                        $"Output + {modifiers[i].ModValue}";
+                    break;
+
+                case ResourceModifierType.Multiplicative:
+                    modLabelText =
+                        $"* {modifiers[i].TargetResource} " +
+                        $"Output + {modifiers[i].ModValue * 100.0:0.0} %";
+                    break;
+            }
+
+            AppendListItem(modifiersView, modLabelText);
+        }
     }
 
     void SetVisibility(bool visible)
