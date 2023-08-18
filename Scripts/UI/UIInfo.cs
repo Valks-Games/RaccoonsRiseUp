@@ -63,27 +63,21 @@ public partial class UIInfo : Node
         gameState.GetJobTypes(ref jobs);
 
         for (int i = 0; i < jobs.Length; ++i)
-        {
-            UpdateJobCount(jobs[i], false);
-        }
+            UpdateJobCount(jobs[i]);
     }
 
     void OnUpdateJobcount(JobType job)
     {
-        UpdateJobCount(job, true);
+        UpdateJobCount(job);
+        UpdateRaccoonsLabel();
     }
 
-    void UpdateJobCount(JobType job, bool updatesLabel)
+    void UpdateJobCount(JobType job)
     {
         if (!jobLabels.TryGetValue(job, out Label label))
             return;
 
         label.Text = gameState.Jobs[job].ToString();
-
-        if (!updatesLabel)
-            return;
-
-        UpdateRaccoonsLabel();
     }
 
     void UpdateRaccoonsLabel()
