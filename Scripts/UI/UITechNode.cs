@@ -37,7 +37,7 @@ public partial class UITechNode : Control
     public void Setup(TechInfo info)
     {
         this.info = info;
-        textureRect.Texture = info.Data.GetImage();
+        textureRect.Texture = info.Data.Image;
     }
 
     public void SetResearchState(TechNodeState state)

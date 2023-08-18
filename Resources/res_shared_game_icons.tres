@@ -1,0 +1,48 @@
+[gd_resource type="Resource" script_class="GameIcons" load_steps=23 format=3 uid="uid://d4irwaet6nru2"]
+
+[ext_resource type="Texture2D" uid="uid://cra4vb5c72wv3" path="res://Sprites/Icons/archive-research.svg" id="1_jcijj"]
+[ext_resource type="Texture2D" uid="uid://bi6qbesshninf" path="res://Sprites/Icons/axe-in-log.svg" id="2_lafm2"]
+[ext_resource type="Script" path="res://Scripts/Resources/GameIcons.cs" id="2_wiotg"]
+[ext_resource type="Texture2D" uid="uid://ck3lw3tg8i7kw" path="res://Sprites/Icons/axe-in-stump.svg" id="3_bcykp"]
+[ext_resource type="Texture2D" uid="uid://cr5qum75740w" path="res://Sprites/Icons/beech.svg" id="4_8se5m"]
+[ext_resource type="Texture2D" uid="uid://62hvawpfd28a" path="res://Sprites/Icons/birch-trees.svg" id="5_x3v1y"]
+[ext_resource type="Texture2D" uid="uid://bs1h820fwywkc" path="res://Sprites/Icons/circular-saw.svg" id="6_4ag1m"]
+[ext_resource type="Texture2D" uid="uid://d3813v8nxhh6h" path="res://Sprites/Icons/crosscut-saw.svg" id="7_xg14j"]
+[ext_resource type="Texture2D" uid="uid://uhsxpc05arol" path="res://Sprites/Icons/double-ringed-orb.svg" id="8_28no1"]
+[ext_resource type="Texture2D" uid="uid://58xamiqlc10b" path="res://Sprites/Icons/half-log.svg" id="9_vey51"]
+[ext_resource type="Texture2D" uid="uid://damosmfolm2uk" path="res://Sprites/Icons/hand-saw.svg" id="10_pcy81"]
+[ext_resource type="Texture2D" uid="uid://lllkk70slpg1" path="res://Sprites/Icons/log.svg" id="11_wlo44"]
+[ext_resource type="Texture2D" uid="uid://cwfnicyqww0vf" path="res://Sprites/Icons/logging.svg" id="12_yo5n2"]
+[ext_resource type="Texture2D" uid="uid://cot6ybdxrq5jf" path="res://Sprites/Icons/pine-tree.svg" id="13_3e4hd"]
+[ext_resource type="Texture2D" uid="uid://br66t6ibywcqt" path="res://Sprites/Icons/planks.svg" id="14_hmms2"]
+[ext_resource type="Texture2D" uid="uid://bsoesog83sg7w" path="res://Sprites/Icons/stone-axe.svg" id="15_uxa3v"]
+[ext_resource type="Texture2D" uid="uid://x5w51pdv24pc" path="res://Sprites/Icons/stone-spear.svg" id="16_gr8y1"]
+[ext_resource type="Texture2D" uid="uid://doejmfovw8jmi" path="res://Sprites/Icons/telescope.svg" id="17_kv2ut"]
+[ext_resource type="Texture2D" uid="uid://c1xy6d7y8a15f" path="res://Sprites/Icons/tesla-coil.svg" id="18_psg2i"]
+[ext_resource type="Texture2D" uid="uid://c6tyawguqcojt" path="res://Sprites/Icons/wood-axe.svg" id="19_rfk58"]
+[ext_resource type="Texture2D" uid="uid://drgg1n8mxip81" path="res://Sprites/Icons/wood-beam.svg" id="20_kgla0"]
+[ext_resource type="Texture2D" uid="uid://b4380kyc02ue" path="res://Sprites/Icons/wood-pile.svg" id="21_tx2gr"]
+
+[resource]
+script = ExtResource("2_wiotg")
+ArchiveResearch = ExtResource("1_jcijj")
+DoubleRingedOrb = ExtResource("8_28no1")
+Telescope = ExtResource("17_kv2ut")
+TeslaCoil = ExtResource("18_psg2i")
+AxeInLog = ExtResource("2_lafm2")
+AxeInStump = ExtResource("3_bcykp")
+Beech = ExtResource("4_8se5m")
+BirchTrees = ExtResource("5_x3v1y")
+CircularSaw = ExtResource("6_4ag1m")
+CrosscutSaw = ExtResource("7_xg14j")
+HalfLog = ExtResource("9_vey51")
+HandSaw = ExtResource("10_pcy81")
+Log = ExtResource("11_wlo44")
+Logging = ExtResource("12_yo5n2")
+PineTree = ExtResource("13_3e4hd")
+Planks = ExtResource("14_hmms2")
+StoneAxe = ExtResource("15_uxa3v")
+WoodAxe = ExtResource("19_rfk58")
+WoodBeam = ExtResource("20_kgla0")
+WoodPile = ExtResource("21_tx2gr")
+StoneSpear = ExtResource("16_gr8y1")

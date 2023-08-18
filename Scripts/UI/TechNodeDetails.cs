@@ -262,7 +262,7 @@ public sealed partial class TechNodeDetails : Control
         labelType.Text = upgradeInfo.DisplayName;
 
         labelDescription.Text = info.TechInfo.Data.Description;
-        icon.Texture = info.TechInfo.Data.GetImage();
+        icon.Texture = info.TechInfo.Data.Image;
 
         SetResearchState(dataService.IsResearched(info.TechInfo.Id));
         UpdateDetails();
