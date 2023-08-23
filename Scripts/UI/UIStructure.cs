@@ -2,62 +2,336 @@ namespace RRU;
 
 public partial class UIStructure : Node
 {
-    // 'int cost' needs to be replaced with an array of resources required
-    // to purchase this structure. For example a structure could cost
-    // 50 tech points, 150 wood and 200 stone
-    int cost;
-    string name;
-    string prevLineEditCountText;
-    LineEdit lineEditCount;
+    /// <summary>
+    /// When selling, how much of the resource amount spent should be refunded?
+    /// </summary>
+    const double RefundFac = 0.3;
+
+    static NodePath PathModal
+        => "%Modal";
+
+    [Export] GameState gameState;
+
+    StructureDataInfo info;
+
+    Control requirements;
+
+    TextureRect iconView;
+    Label labelName;
+    Label labelCount;
+    SpinBox countField;
+
+    Button btnBuy;
+    Button btnSell;
+
+    /// <summary>
+    /// This should be bound to a preference item so that the player can
+    /// toggle this behaviour by themself.
+    /// </summary>
+    bool configModalConfirm = true;
+
+    bool buyMode;
 
     public override void _Ready()
     {
-        lineEditCount = GetNode<LineEdit>("%Count");
-        lineEditCount.TextChanged += EnforceOnlyNumbersOnCountLineEdit;
-        GetNode<Button>("%Purchase").Pressed += HandlePurchase;
+        // Init
+        buyMode = false;
+
+        // Get
+        requirements = GetNode<Control>("%Requirements");
+
+        labelName = GetNode<Label>("%Name");
+        labelCount = GetNode<Label>("%Count");
+        countField = GetNode<SpinBox>("%ActionCount");
+
+        iconView = GetNode<TextureRect>("%Icon");
+
+        btnBuy = GetNode<Button>("%Buy");
+        btnSell = GetNode<Button>("%Sell");
+
+        UIStructureModal modal = GetNode<UIStructureModal>(PathModal);
+
+        // Bind
+        gameState.StructuresChanged += OnStructuresUpdated;
+
+        modal.OnClosed += OnModalClosed;
+
+        btnBuy.Pressed += OnBuyPressed;
+        btnSell.Pressed += OnSellPressed;
+
+        countField.GetLineEdit().TextSubmitted += OnActionCountSubmitted;
     }
 
-    public UIStructure UpdateName(string name)
+    public override void _Notification(int what)
     {
-        this.name = name;
-        GetNode<Label>("%Name").Text = name;
-        return this;
-    }
-
-    public UIStructure UpdateCost(int cost)
-    {
-        this.cost = cost;
-        GetNode<Label>("%Cost").Text = cost.ToString();
-        return this;
-    }
-
-    // The param should not be of type 'TechType' but rather 'StructureType'
-    // but then this means that techs and structures both share the same image
-    // data in common. The code should be refactored around this somehow.
-    public UIStructure UpdateIcon(TechType techType)
-    {
-        GetNode<TextureRect>("%Icon").Texture = 
-            Game.TechData[techType].GetImage();
-
-        return this;
-    }
-
-    void HandlePurchase()
-    {
-        if (!int.TryParse(lineEditCount.Text, out int amount))
+        if (what != GodotObject.NotificationPredelete)
             return;
 
-        GD.Print($"Purchased {amount} {name} for {cost * amount} wood");
+        gameState.StructuresChanged -= OnStructuresUpdated;
     }
 
-    void EnforceOnlyNumbersOnCountLineEdit(string text)
+    /// Event Handlers ///
+
+    void OnStructuresUpdated(StructureDict _)
     {
-        if (!text.IsDigitsOnly())
+        labelCount.Text = $"(In Storage: {gameState.GetStructureCount(info.Identifier)})";
+    }
+
+    void OnActionCountSubmitted(string _)
+    {
+        countField.GetLineEdit().ReleaseFocus();
+    }
+
+    void OnBuyPressed()
+    {
+        if (configModalConfirm)
         {
-            lineEditCount.Text = prevLineEditCountText;
+            ShowModal(true);
             return;
         }
 
-        prevLineEditCountText = text;
+        PerformPurchase(Mathf.RoundToInt(countField.Value));
+    }
+
+    void OnSellPressed()
+    {
+        if (configModalConfirm)
+        {
+            ShowModal(false);
+            return;
+        }
+
+        PerformSell(Mathf.RoundToInt(countField.Value));
+    }
+
+    void OnModalClosed(bool confirmAction)
+    {
+        if (!confirmAction)
+            return;
+
+        int amount = Mathf.RoundToInt(countField.Value);
+
+        if (buyMode)
+        {
+            PerformPurchase(amount);
+            return;
+        }
+
+        PerformSell(amount);
+    }
+
+    /// Helpers ///
+
+    /// <summary>
+    /// Must only be called during the 'setup' phase.
+    /// Since the template node is destroyed after the initial call,
+    /// subsequent attempts to 'configure' the node will result
+    /// in a nil exception.
+    /// </summary>
+    public void Configure(StructureDataInfo info)
+    {
+        this.info = info;
+        Node template = GetNode("%RequirementCell");
+
+        // Basic details
+        labelName.Text = info.DisplayName;
+        iconView.Texture = info.Icon;
+
+        // Requirements
+        int count = gameState.GetStructureCount(info.Identifier);
+
+        Span<MaterialCostInfo> materialCost = stackalloc MaterialCostInfo[info.Cost.Length];
+        GetUpdatedCost(count, 1, ref materialCost);
+
+        for (int i = 0; i < materialCost.Length; ++i)
+        {
+            Control cell = (Control) template.Duplicate();
+            requirements.AddChild(cell);
+
+            UpdateCell(cell, materialCost[i].Resource, materialCost[i].Cost);
+        }
+
+        template.QueueFree();
+
+        // Initial update
+        OnStructuresUpdated(null);
+    }
+
+    /// <summary>
+    /// Use this to update the requirements list.
+    /// </summary>
+    public void Update(StructureDataInfo info)
+    {
+        int count = gameState.GetStructureCount(info.Identifier);
+        int amount = Mathf.RoundToInt(countField.Value);
+
+        Span<MaterialCostInfo> materialCost = stackalloc MaterialCostInfo[info.Cost.Length];
+        GetUpdatedCost(count, amount, ref materialCost);
+
+        for (int i = 0; i < materialCost.Length; ++i)
+        {
+            Control cell = requirements.GetChild<Control>(i);
+            UpdateCell(cell, materialCost[i].Resource, materialCost[i].Cost);
+        }
+
+        btnBuy.Disabled = !CanAfford(null, amount);
+        btnSell.Disabled = count < amount;
+    }
+
+    void UpdateCell(Control cell, ResourceType type, double cost)
+    {
+        ResourceType resourceType = type;
+
+        double amountInInventory = gameState
+            .GetResourceCount(resourceType);
+
+        cell.GetNode<Label>("Resource")
+            .Text = type.ToString();
+
+        cell.GetNode<Label>("Cost")
+            .Text = $"{amountInInventory:0.0} / {cost:0.0}";
+
+        cell.Modulate = gameState.HasResource(type, cost)
+            ? Colors.LightGreen : Colors.Salmon;
+    }
+
+    void SetModalVisibility(bool visible)
+    {
+        UIStructureModal modal = GetNode<UIStructureModal>(PathModal);
+        modal.SetVisible(visible);
+    }
+
+    void ShowModal(bool isBuying)
+    {
+        buyMode = isBuying;
+        SetModalVisibility(true);
+
+        UIStructureModal modal = GetNode<UIStructureModal>(PathModal);
+
+        // TODO: Localisation
+        modal.SetTitle(
+            buyMode ? "Perform Purchase?" : "Sell Structure?"
+        );
+    }
+
+    bool CanAfford(int? countOverride = null, int forecast = 1)
+    {
+        int count = countOverride ?? gameState.GetStructureCount(info.Identifier);
+        count = Math.Max(0, count - 1);
+
+        Span<MaterialCostInfo> materialCost = stackalloc MaterialCostInfo[info.Cost.Length];
+        GetUpdatedCost(count, forecast, ref materialCost);
+
+        for (int i = 0; i < materialCost.Length; ++i)
+        {
+            ResourceType resource = materialCost[i].Resource;
+            double cost = materialCost[i].Cost;
+
+            if (gameState.HasResource(resource, cost))
+                continue;
+
+            return false;
+        }
+
+        return true;
+    }
+
+    void PerformPurchase(int amount)
+    {
+        int count = gameState.GetStructureCount(info.Identifier);
+
+        Span<MaterialCostInfo> materialCost =
+            stackalloc MaterialCostInfo[info.Cost.Length];
+
+        GetUpdatedCost(count, amount, ref materialCost);
+
+        for (int i = 0; i < materialCost.Length; ++i)
+        {
+            gameState.TakeResource(materialCost[i].Resource, materialCost[i].Cost);
+        }
+
+        gameState.AddStructure(info.Identifier, amount);
+    }
+
+    void PerformSell(int amount)
+    {
+        int count = gameState.GetStructureCount(info.Identifier);
+
+        Span<MaterialCostInfo> materialCost =
+            stackalloc MaterialCostInfo[info.Cost.Length];
+
+        GetUpdatedCost(Math.Max(0, count - amount), amount, ref materialCost);
+
+        for (int i = 0; i < materialCost.Length; ++i)
+        {
+            gameState.AddResource(materialCost[i].Resource, materialCost[i].Cost * RefundFac);
+        }
+
+        gameState.RemoveStructure(info.Identifier, amount);
+    }
+
+    /// <summary>
+    /// <para>
+    /// Writes to a span describing a material requirement constraint with the updated price.
+    /// </para>
+    /// <para>
+    /// (Assumes that 'costInfo' is allocated and has the same length as 'info.Cost').
+    /// </para>
+    /// </summary>
+    void GetUpdatedCost(int count, int forecast, ref Span<MaterialCostInfo> costInfo)
+    {
+        for (int i = 0; i < info.Cost.Length; ++i)
+        {
+            costInfo[i] = new(
+                structureId: info.Identifier,
+                structureCount: count,
+                forecast: forecast,
+                requirement: info.Cost[i]
+            );
+        }
+    }
+
+    /// <summary>
+    /// Calculates the updated cost of a resource requirement.
+    /// </summary>
+    /// <returns></returns>
+    public static double CalculateCostForResource(
+        double baseCost,
+        int count,
+        int forecast = 1,
+        double penaltyModifier = 1.0)
+    {
+        double total = 0.0f;
+
+        for (int i = 0, l = count + forecast; i < l; ++i)
+        {
+            total += baseCost + Mathf.Round(
+                baseCost * Mathf.Pow(i, 1.5) * penaltyModifier
+            );
+        }
+
+        return total;
+    }
+
+    struct MaterialCostInfo
+    {
+        public readonly ResourceType Resource;
+        public readonly double Cost;
+
+        public MaterialCostInfo(
+            StringName structureId,
+            int structureCount,
+            int forecast,
+            ResourceRequirement requirement)
+        {
+            Resource = requirement.Type;
+
+            Cost = UIStructure.CalculateCostForResource(
+                baseCost: requirement.Amount,
+                count: structureCount,
+                forecast: forecast,
+                penaltyModifier: requirement.PenaltyModifier
+            );
+        }
     }
 }

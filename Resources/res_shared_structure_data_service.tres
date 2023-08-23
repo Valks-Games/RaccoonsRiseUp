@@ -1,0 +1,58 @@
+[gd_resource type="Resource" script_class="StructureDataService" load_steps=14 format=3 uid="uid://bl06cl5gsg4os"]
+
+[ext_resource type="Script" path="res://Scripts/Resources/StructureDataService.cs" id="1_ul2dr"]
+[ext_resource type="Script" path="res://Scripts/Resources/ResourceRequirement.cs" id="2_4c5j1"]
+[ext_resource type="Script" path="res://Scripts/Resources/StructureDataInfo.cs" id="2_g1c57"]
+[ext_resource type="Texture2D" uid="uid://b4380kyc02ue" path="res://Sprites/Icons/wood-pile.svg" id="2_rw13k"]
+[ext_resource type="Script" path="res://Scripts/Resources/StructureHarvestInfo.cs" id="3_n1tjh"]
+[ext_resource type="Texture2D" uid="uid://uhsxpc05arol" path="res://Sprites/Icons/double-ringed-orb.svg" id="4_lor8m"]
+
+[sub_resource type="Resource" id="Resource_j4goh"]
+script = ExtResource("2_4c5j1")
+Type = 0
+Amount = 100
+PenaltyModifier = 1.0
+
+[sub_resource type="Resource" id="Resource_wm8rm"]
+script = ExtResource("3_n1tjh")
+HarvestType = 0
+HarvestRate = 1.5
+HarvestAmount = 3.0
+
+[sub_resource type="Resource" id="Resource_rrrwc"]
+script = ExtResource("2_g1c57")
+Identifier = &"lumber"
+DisplayName = "Lumber Camp"
+Icon = ExtResource("2_rw13k")
+Cost = Array[Object]([SubResource("Resource_j4goh")])
+HarvestInfo = Array[Object]([SubResource("Resource_wm8rm")])
+
+[sub_resource type="Resource" id="Resource_r6woy"]
+script = ExtResource("2_4c5j1")
+Type = 0
+Amount = 100
+PenaltyModifier = 1.0
+
+[sub_resource type="Resource" id="Resource_wwcxs"]
+script = ExtResource("2_4c5j1")
+Type = 1
+Amount = 50
+PenaltyModifier = 1.0
+
+[sub_resource type="Resource" id="Resource_5kdce"]
+script = ExtResource("3_n1tjh")
+HarvestType = 1
+HarvestRate = 1.0
+HarvestAmount = 2.5
+
+[sub_resource type="Resource" id="Resource_asg2x"]
+script = ExtResource("2_g1c57")
+Identifier = &"research"
+DisplayName = "Research Camp"
+Icon = ExtResource("4_lor8m")
+Cost = Array[Object]([SubResource("Resource_r6woy"), SubResource("Resource_wwcxs")])
+HarvestInfo = Array[Object]([SubResource("Resource_5kdce")])
+
+[resource]
+script = ExtResource("1_ul2dr")
+structures = Array[Object]([SubResource("Resource_rrrwc"), SubResource("Resource_asg2x")])

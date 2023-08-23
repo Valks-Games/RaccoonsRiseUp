@@ -10,7 +10,7 @@ public sealed partial class GameState
 
     public void ProcessResourceTick(double delta)
     {
-        Span<IResourceModifier> modifiers = 
+        Span<IResourceModifier> modifiers =
             new IResourceModifier[MAX_MODIFIERS];
 
         int modifierIdx = 0;
@@ -23,26 +23,8 @@ public sealed partial class GameState
             AppendToSpan(jobs[i], delta, ref modifiers, ref modifierIdx);
         }
 
-        // TODO: Add structure-related instructions once it is implemented
-
-        // Add upgrade modifiers
-        Span<TechUpgradeInfo> techUpgrades = default;
-        dataService.GetResearchedUpgrades(ref techUpgrades);
-
-        for (int i = 0; i < techUpgrades.Length; ++i)
-        {
-            ReadOnlySpan<ResourceModifierDefinition> modifierDefs = 
-                techUpgrades[i].Modifiers;
-
-            for (int j = 0; j < modifierDefs.Length; ++j)
-            {
-                AppendToSpan(
-                    modifierDefs[j], 
-                    delta,
-                    ref modifiers, 
-                    ref modifierIdx);
-            }
-        }
+        AddStructureModifiers(ref modifiers, ref modifierIdx, delta);
+        AddTechUpgradeModifiers(ref modifiers, ref modifierIdx, delta);
 
         modifiers = modifiers[..modifierIdx];
         EvaluateModifiers(modifiers, delta);
@@ -51,8 +33,6 @@ public sealed partial class GameState
     /// <summary>
     /// Performs the actual evaluation of resource modifiers.
     /// </summary>
-    /// <param name="modifiers"></param>
-    /// <param name="delta"></param>
     void EvaluateModifiers(Span<IResourceModifier> modifiers, double delta)
     {
         ReadOnlySpan<ResourceType> resourceTypes = default;
@@ -67,6 +47,60 @@ public sealed partial class GameState
         UpdateResources();
     }
 
+    /// Aggregation ///
+
+    void AddStructureModifiers(ref Span<IResourceModifier> modifiers, ref int modifierIdx, double delta)
+    {
+        ReadOnlySpan<StructureDataInfo> structureInfo = default;
+        structureDataService.GetStructures(ref structureInfo);
+
+        for (int i = 0; i < structureInfo.Length; ++i)
+        {
+            StructureDataInfo structure = structureInfo[i];
+
+            if (!Structures.TryGetValue(structure.Identifier, out int count) ||
+                count < 1)
+            {
+                continue;
+            }
+
+            ReadOnlySpan<StructureHarvestInfo> harvest = structure.HarvestInfo;
+
+            for (int j = 0; j < harvest.Length; ++j)
+            {
+                AppendToSpan(
+                    modifier: harvest[j],
+                    delta: delta,
+                    modifiers: ref modifiers,
+                    index: ref modifierIdx
+                );
+            }
+        }
+    }
+
+    void AddTechUpgradeModifiers(ref Span<IResourceModifier> modifiers, ref int modifierIdx, double delta)
+    {
+        // Add upgrade modifiers
+        Span<TechUpgradeInfo> techUpgrades = default;
+        techDataService.GetResearchedUpgrades(ref techUpgrades);
+
+        for (int i = 0; i < techUpgrades.Length; ++i)
+        {
+            ReadOnlySpan<ResourceModifierDefinition> modifierDefs =
+                techUpgrades[i].Modifiers;
+
+            for (int j = 0; j < modifierDefs.Length; ++j)
+            {
+                AppendToSpan(
+                    modifier: modifierDefs[j],
+                    delta: delta,
+                    modifiers: ref modifiers,
+                    index: ref modifierIdx
+                );
+            }
+        }
+    }
+
     /// Passes ///
 
     /// <summary>
@@ -74,8 +108,8 @@ public sealed partial class GameState
     /// * Multiplier pass *
     /// </para>
     /// <para>
-    /// Iterates through the modifiers list and accumulates the multipliers 
-    /// of each resource types.
+    /// Iterates through the modifiers list and accumulates the multipliers
+    /// for each resource type.
     /// </para>
     /// </summary>
     void ProcessMultiplicatives(
@@ -117,7 +151,7 @@ public sealed partial class GameState
     /// + Additive Pass +
     /// </para>
     /// <para>
-    /// Iterates through the active modifier list and adds their value to 
+    /// Iterates through the active modifier list and adds their value to
     /// the total resource counts. (Affected by multipliers.)
     /// </para>
     /// </summary>
@@ -134,7 +168,7 @@ public sealed partial class GameState
             if (modifier.Type != ResourceModifierType.Additive)
                 continue;
 
-            double modTotal = 
+            double modTotal =
                 GetMultiplier(multipliers, modifier.Resource) * modifier.Amount;
 
             Resources[modifier.Resource] =

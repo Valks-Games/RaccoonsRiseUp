@@ -1,0 +1,46 @@
+[gd_scene load_steps=3 format=3 uid="uid://cu17qkgubsqwa"]
+
+[ext_resource type="Script" path="res://Scenes/Prefabs/UI/UIStructureModal.cs" id="1_4a3jd"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uq0gs"]
+bg_color = Color(0.0470588, 0.0470588, 0.0470588, 0.823529)
+
+[node name="Modal" type="Panel"]
+offset_right = 250.0
+offset_bottom = 450.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_uq0gs")
+script = ExtResource("1_4a3jd")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Confirm purchase?"
+horizontal_alignment = 1
+
+[node name="Confirm" type="Button" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "Yes"
+
+[node name="Abort" type="Button" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "Abort"

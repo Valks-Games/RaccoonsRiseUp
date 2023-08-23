@@ -15,6 +15,7 @@ ModValue = 0.05
 script = ExtResource("1_aoil5")
 Type = 1
 Amount = 50
+PenaltyModifier = 1.0
 
 [sub_resource type="Resource" id="Resource_b43ew"]
 script = ExtResource("1_y3fwg")
@@ -36,11 +37,13 @@ ModValue = 0.05
 script = ExtResource("1_aoil5")
 Type = 0
 Amount = 50
+PenaltyModifier = 1.0
 
 [sub_resource type="Resource" id="Resource_3buv2"]
 script = ExtResource("1_aoil5")
 Type = 1
 Amount = 80
+PenaltyModifier = 1.0
 
 [sub_resource type="Resource" id="Resource_l4qjo"]
 script = ExtResource("1_y3fwg")
@@ -62,11 +65,13 @@ ModValue = 0.075
 script = ExtResource("1_aoil5")
 Type = 0
 Amount = 50
+PenaltyModifier = 1.0
 
 [sub_resource type="Resource" id="Resource_gago4"]
 script = ExtResource("1_aoil5")
 Type = 1
 Amount = 200
+PenaltyModifier = 1.0
 
 [sub_resource type="Resource" id="Resource_svdyu"]
 script = ExtResource("1_y3fwg")
@@ -88,11 +93,13 @@ ModValue = 0.075
 script = ExtResource("1_aoil5")
 Type = 0
 Amount = 100
+PenaltyModifier = 1.0
 
 [sub_resource type="Resource" id="Resource_mwbjb"]
 script = ExtResource("1_aoil5")
 Type = 1
 Amount = 350
+PenaltyModifier = 1.0
 
 [sub_resource type="Resource" id="Resource_novj8"]
 script = ExtResource("1_y3fwg")
@@ -114,11 +121,13 @@ ModValue = 1.5
 script = ExtResource("1_aoil5")
 Type = 0
 Amount = 20
+PenaltyModifier = 1.0
 
 [sub_resource type="Resource" id="Resource_xn73c"]
 script = ExtResource("1_aoil5")
 Type = 1
 Amount = 200
+PenaltyModifier = 1.0
 
 [sub_resource type="Resource" id="Resource_rlxob"]
 script = ExtResource("1_y3fwg")
@@ -146,11 +155,13 @@ ModValue = 0.05
 script = ExtResource("1_aoil5")
 Type = 0
 Amount = 50
+PenaltyModifier = 1.0
 
 [sub_resource type="Resource" id="Resource_6g8fb"]
 script = ExtResource("1_aoil5")
 Type = 1
 Amount = 800
+PenaltyModifier = 1.0
 
 [sub_resource type="Resource" id="Resource_g3snp"]
 script = ExtResource("1_y3fwg")
@@ -178,11 +189,13 @@ ModValue = 2.0
 script = ExtResource("1_aoil5")
 Type = 0
 Amount = 300
+PenaltyModifier = 1.0
 
 [sub_resource type="Resource" id="Resource_f3quf"]
 script = ExtResource("1_aoil5")
 Type = 1
 Amount = 1500
+PenaltyModifier = 1.0
 
 [sub_resource type="Resource" id="Resource_bgimb"]
 script = ExtResource("1_y3fwg")
@@ -204,6 +217,7 @@ ModValue = 0.05
 script = ExtResource("1_aoil5")
 Type = 1
 Amount = 100
+PenaltyModifier = 1.0
 
 [sub_resource type="Resource" id="Resource_mobq8"]
 script = ExtResource("1_y3fwg")
@@ -225,6 +239,7 @@ ModValue = 0.05
 script = ExtResource("1_aoil5")
 Type = 1
 Amount = 300
+PenaltyModifier = 1.0
 
 [sub_resource type="Resource" id="Resource_84v33"]
 script = ExtResource("1_y3fwg")
@@ -246,6 +261,7 @@ ModValue = 0.075
 script = ExtResource("1_aoil5")
 Type = 1
 Amount = 800
+PenaltyModifier = 1.0
 
 [sub_resource type="Resource" id="Resource_ofqm7"]
 script = ExtResource("1_y3fwg")
@@ -267,6 +283,7 @@ ModValue = 0.5
 script = ExtResource("1_aoil5")
 Type = 1
 Amount = 1
+PenaltyModifier = 1.0
 
 [sub_resource type="Resource" id="Resource_5h7gd"]
 script = ExtResource("1_y3fwg")
@@ -288,6 +305,7 @@ ModValue = 0.5
 script = ExtResource("1_aoil5")
 Type = 1
 Amount = 1
+PenaltyModifier = 1.0
 
 [sub_resource type="Resource" id="Resource_duq5e"]
 script = ExtResource("1_y3fwg")
