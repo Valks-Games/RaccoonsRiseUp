@@ -201,8 +201,9 @@ public partial class UIStructure : Node
         cell.GetNode<Label>("Resource")
             .Text = type.ToString();
 
-        cell.GetNode<Label>("Cost")
-            .Text = $"{amountInInventory:0.0} / {cost:0.0}";
+        cell.GetNode<Label>("Cost").Text = 
+            $"{Utils.RoundGameValue(amountInInventory)} / " +
+            $"{Utils.RoundGameValue(cost)}";
 
         cell.Modulate = gameState.HasResource(type, cost)
             ? Colors.LightGreen : Colors.Salmon;

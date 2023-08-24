@@ -202,7 +202,8 @@ public sealed partial class TechNodeDetails : Control
             case ResourceModifierType.Multiplicative:
                 modLabelText =
                     $"* {modifiers[i].TargetResource} " +
-                    $"Output + {modifiers[i].ModValue * 100.0:0.0} %";
+                    $"Output + " +
+                    $"{Utils.RoundGameValue(modifiers[i].ModValue * 100.0)} %";
                 break;
         }
 
