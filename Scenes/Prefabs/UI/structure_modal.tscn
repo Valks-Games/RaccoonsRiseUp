@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cu17qkgubsqwa"]
 
-[ext_resource type="Script" path="res://Scenes/Prefabs/UI/UIStructureModal.cs" id="1_4a3jd"]
+[ext_resource type="Script" path="res://Scripts/UI/UIStructureModal.cs" id="1_4a3jd"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uq0gs"]
 bg_color = Color(0.0470588, 0.0470588, 0.0470588, 0.823529)
