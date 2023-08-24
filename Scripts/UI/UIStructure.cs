@@ -37,7 +37,7 @@ public partial class UIStructure : Node
     public UIStructure UpdateIcon(TechType techType)
     {
         GetNode<TextureRect>("%Icon").Texture = 
-            Game.TechData[techType].Image;
+            Game.TechData[techType].GetImage();
 
         return this;
     }

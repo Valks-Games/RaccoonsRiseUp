@@ -13,25 +13,6 @@ public partial class Game : Node
 
     public override void _EnterTree()
     {
-        // This should be moved somewhere else
-        TechData = new()
-        {
-            {
-                TechType.WoodEffeciency, new TechData
-                {
-                    Image = gameState.Icons.WoodBeam,
-                    Description = "Increase wood production"
-                }
-            },
-            {
-                TechType.ResearchEffeciency, new TechData
-                {
-                    Image = gameState.Icons.ArchiveResearch,
-                    Description = "Increase research production"
-                }
-            }
-        };
-
         LoadGame();
     }
 
