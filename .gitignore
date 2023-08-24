@@ -4,6 +4,7 @@ Exported/*
 
 # Visual Studio ignores
 .vs/*
+.vscode/*
 Properties/*
 
 # Include these files

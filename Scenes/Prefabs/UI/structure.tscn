@@ -1,35 +1,48 @@
-[gd_scene load_steps=3 format=3 uid="uid://bfealbvfam06c"]
+[gd_scene load_steps=7 format=3 uid="uid://bfealbvfam06c"]
 
 [ext_resource type="Script" path="res://Scripts/UI/UIStructure.cs" id="1_npqcw"]
 [ext_resource type="Texture2D" uid="uid://drgg1n8mxip81" path="res://Sprites/Icons/wood-beam.svg" id="1_sc136"]
+[ext_resource type="Resource" uid="uid://7lt0byaqcwg6" path="res://Resources/res_shared_game_state.tres" id="2_36mbr"]
+[ext_resource type="PackedScene" uid="uid://cu17qkgubsqwa" path="res://Scenes/Prefabs/UI/structure_modal.tscn" id="4_01trl"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_0cnb3"]
+font_size = 12
+font_color = Color(0.729412, 0.729412, 0.729412, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_p1ehd"]
+font_size = 12
+font_color = Color(0.847059, 0.847059, 0.847059, 1)
 
 [node name="Structure" type="PanelContainer"]
+custom_minimum_size = Vector2(280, 440)
+offset_right = 171.0
+offset_bottom = 300.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 script = ExtResource("1_npqcw")
+gameState = ExtResource("2_36mbr")
 
 [node name="Margin" type="MarginContainer" parent="."]
 layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
 
 [node name="VBox" type="VBoxContainer" parent="Margin"]
 layout_mode = 2
 
-[node name="Margin" type="MarginContainer" parent="Margin/VBox"]
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="Margin/VBox"]
 layout_mode = 2
-theme_override_constants/margin_left = 30
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 30
-theme_override_constants/margin_bottom = 0
+stretch_mode = 1
 
-[node name="Icon" type="TextureRect" parent="Margin/VBox/Margin"]
+[node name="Icon" type="TextureRect" parent="Margin/VBox/AspectRatioContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 90)
 layout_mode = 2
 texture = ExtResource("1_sc136")
 expand_mode = 4
+stretch_mode = 5
 
 [node name="Name" type="Label" parent="Margin/VBox"]
 unique_name_in_owner = true
@@ -37,31 +50,78 @@ layout_mode = 2
 text = "Lumber Camp"
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Margin/VBox"]
+[node name="ReqLabel" type="Label" parent="Margin/VBox"]
+layout_mode = 2
+text = "Requirements:"
+label_settings = SubResource("LabelSettings_0cnb3")
+
+[node name="Requirements" type="VBoxContainer" parent="Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RequirementCell" type="HBoxContainer" parent="Margin/VBox/Requirements"]
+unique_name_in_owner = true
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="Margin/VBox/HBoxContainer"]
+[node name="Resource" type="Label" parent="Margin/VBox/Requirements/RequirementCell"]
 layout_mode = 2
-text = "Cost:"
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Wood:"
 
-[node name="Cost" type="Label" parent="Margin/VBox/HBoxContainer"]
+[node name="Cost" type="Label" parent="Margin/VBox/Requirements/RequirementCell"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "0/100"
+horizontal_alignment = 2
+
+[node name="HSeparator" type="HSeparator" parent="Margin/VBox"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Margin/VBox"]
+layout_mode = 2
+
+[node name="ActionCount" type="SpinBox" parent="Margin/VBox/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.0901961, 1, 0, 1)
-text = "100"
+size_flags_horizontal = 3
+min_value = 1.0
+max_value = 1000.0
+value = 1.0
+rounded = true
+prefix = "Count:"
+
+[node name="Count" type="Label" parent="Margin/VBox/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "(In storage: 0)"
+label_settings = SubResource("LabelSettings_p1ehd")
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="HBox" type="HBoxContainer" parent="Margin/VBox"]
 layout_mode = 2
 
-[node name="Purchase" type="Button" parent="Margin/VBox/HBox"]
+[node name="Buy" type="Button" parent="Margin/VBox/HBox"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
-text = "Purchase"
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Buy"
 
-[node name="Count" type="LineEdit" parent="Margin/VBox/HBox"]
+[node name="Sell" type="Button" parent="Margin/VBox/HBox"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
-text = "1"
-alignment = 1
-max_length = 5
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Sell"
+
+[node name="Modal" parent="." instance=ExtResource("4_01trl")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2

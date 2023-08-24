@@ -48,7 +48,7 @@ public partial class Game : Node
             Raccoons = gameState.Raccoons,
             NumJobs = gameState.Jobs,
             NumResources = gameState.Resources,
-            NumStructures = gameState.Structures,
+            Structures = gameState.Structures,
             ResearchedUpgrades = techData.Serialise()
         };
 
@@ -72,7 +72,11 @@ public partial class Game : Node
         gameState.Raccoons = saveData.Raccoons;
         gameState.Jobs = saveData.NumJobs;
         gameState.Resources = saveData.NumResources;
-        gameState.Structures = saveData.NumStructures;
+
+        if (saveData.Structures != null)
+        {
+            gameState.Structures = saveData.Structures;
+        }
 
         if (saveData.ResearchedUpgrades != null)
         {

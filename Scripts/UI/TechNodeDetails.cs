@@ -29,8 +29,6 @@ public sealed partial class TechNodeDetails : Control
     TechInfo info;
     bool wasVisible;
 
-    float updateTick;
-
     public override void _Ready()
     {
         icon = GetNode<TextureRect>("%Icon");
@@ -53,21 +51,25 @@ public sealed partial class TechNodeDetails : Control
 
         SetResearchState(false);
         Modulate = Colors.Transparent;
+
+        gameState.ResourcesChanged += OnResourcesChanged;
     }
 
-    public override void _Process(double delta)
+    public override void _Notification(int what)
+    {
+        if (what != GodotObject.NotificationPredelete)
+            return;
+
+        gameState.ResourcesChanged -= OnResourcesChanged;
+    }
+
+    public void OnResourcesChanged(ResourceDict _)
     {
         if (info == null)
             return;
 
-        updateTick += (float) delta;
-
-        if (updateTick < 0.5f)
-            return;
-
         // Periodically check for material requirements;
         UpdateResearchButtonState(dataService.IsResearched(info.Id));
-        updateTick = 0.0f;
     }
 
     /// Helpers ///
@@ -171,7 +173,7 @@ public sealed partial class TechNodeDetails : Control
         );
     }
 
-    void UpdateCost(int i , ReadOnlySpan<ResourceRequirement> cost)
+    void UpdateCost(int i, ReadOnlySpan<ResourceRequirement> cost)
     {
         if (i >= cost.Length)
             return;
@@ -264,8 +266,6 @@ public sealed partial class TechNodeDetails : Control
 
         SetResearchState(dataService.IsResearched(info.TechInfo.Id));
         UpdateDetails();
-
-        updateTick = 0f;
     }
 
     public void OnHideRequested()

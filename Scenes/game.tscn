@@ -5,7 +5,7 @@
 [ext_resource type="Resource" uid="uid://7lt0byaqcwg6" path="res://Resources/res_shared_game_state.tres" id="2_tndqm"]
 [ext_resource type="PackedScene" uid="uid://dguahjnd1njnr" path="res://Scenes/jobs.tscn" id="2_vouy1"]
 [ext_resource type="Script" path="res://Scripts/UI/UITech.cs" id="4_ymnje"]
-[ext_resource type="Resource" uid="uid://bq25wiv36tld1" path="res://Resources/res_shared_data_service.tres" id="5_g65f1"]
+[ext_resource type="Resource" uid="uid://bq25wiv36tld1" path="res://Resources/res_shared_tech_data_service.tres" id="5_g65f1"]
 [ext_resource type="Script" path="res://Scripts/UI/TechCameraController.cs" id="5_wlc8b"]
 [ext_resource type="PackedScene" uid="uid://c3p0ul44nasqs" path="res://Scenes/structures.tscn" id="6_0g8gf"]
 [ext_resource type="Texture2D" uid="uid://bwyp57e85ufa0" path="res://Sprites/Tilesets/basictiles.png" id="6_lwov1"]
