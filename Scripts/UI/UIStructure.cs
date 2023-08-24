@@ -5,10 +5,9 @@ public partial class UIStructure : Node
     /// <summary>
     /// When selling, how much of the resource amount spent should be refunded?
     /// </summary>
-    const double RefundFac = 0.3;
+    const double REFUND_FACTOR = 0.3;
 
-    static NodePath PathModal
-        => "%Modal";
+    static NodePath pathModal => "%Modal";
 
     [Export] GameState gameState;
 
@@ -49,7 +48,7 @@ public partial class UIStructure : Node
         btnBuy = GetNode<Button>("%Buy");
         btnSell = GetNode<Button>("%Sell");
 
-        UIStructureModal modal = GetNode<UIStructureModal>(PathModal);
+        UIStructureModal modal = GetNode<UIStructureModal>(pathModal);
 
         // Bind
         gameState.StructuresChanged += OnStructuresUpdated;
@@ -74,7 +73,8 @@ public partial class UIStructure : Node
 
     void OnStructuresUpdated(StructureDict _)
     {
-        labelCount.Text = $"(In Storage: {gameState.GetStructureCount(info.Identifier)})";
+        labelCount.Text = 
+            $"(In Storage: {gameState.GetStructureCount(info.Identifier)})";
     }
 
     void OnActionCountSubmitted(string _)
@@ -149,7 +149,9 @@ public partial class UIStructure : Node
         // Requirements
         int count = gameState.GetStructureCount(info.Identifier);
 
-        Span<MaterialCostInfo> materialCost = stackalloc MaterialCostInfo[info.Cost.Length];
+        Span<MaterialCostInfo> materialCost = 
+            stackalloc MaterialCostInfo[info.Cost.Length];
+
         GetUpdatedCost(count, 1, ref materialCost);
 
         for (int i = 0; i < materialCost.Length; ++i)
@@ -174,7 +176,9 @@ public partial class UIStructure : Node
         int count = gameState.GetStructureCount(info.Identifier);
         int amount = Mathf.RoundToInt(countField.Value);
 
-        Span<MaterialCostInfo> materialCost = stackalloc MaterialCostInfo[info.Cost.Length];
+        Span<MaterialCostInfo> materialCost = 
+            stackalloc MaterialCostInfo[info.Cost.Length];
+
         GetUpdatedCost(count, amount, ref materialCost);
 
         for (int i = 0; i < materialCost.Length; ++i)
@@ -206,7 +210,7 @@ public partial class UIStructure : Node
 
     void SetModalVisibility(bool visible)
     {
-        UIStructureModal modal = GetNode<UIStructureModal>(PathModal);
+        UIStructureModal modal = GetNode<UIStructureModal>(pathModal);
         modal.SetVisible(visible);
     }
 
@@ -215,7 +219,7 @@ public partial class UIStructure : Node
         buyMode = isBuying;
         SetModalVisibility(true);
 
-        UIStructureModal modal = GetNode<UIStructureModal>(PathModal);
+        UIStructureModal modal = GetNode<UIStructureModal>(pathModal);
 
         // TODO: Localisation
         modal.SetTitle(
@@ -225,10 +229,14 @@ public partial class UIStructure : Node
 
     bool CanAfford(int? countOverride = null, int forecast = 1)
     {
-        int count = countOverride ?? gameState.GetStructureCount(info.Identifier);
+        int count = countOverride ?? 
+            gameState.GetStructureCount(info.Identifier);
+
         count = Math.Max(0, count - 1);
 
-        Span<MaterialCostInfo> materialCost = stackalloc MaterialCostInfo[info.Cost.Length];
+        Span<MaterialCostInfo> materialCost = 
+            stackalloc MaterialCostInfo[info.Cost.Length];
+
         GetUpdatedCost(count, forecast, ref materialCost);
 
         for (int i = 0; i < materialCost.Length; ++i)
@@ -256,7 +264,9 @@ public partial class UIStructure : Node
 
         for (int i = 0; i < materialCost.Length; ++i)
         {
-            gameState.TakeResource(materialCost[i].Resource, materialCost[i].Cost);
+            gameState.TakeResource(
+                materialCost[i].Resource, 
+                materialCost[i].Cost);
         }
 
         gameState.AddStructure(info.Identifier, amount);
@@ -273,7 +283,9 @@ public partial class UIStructure : Node
 
         for (int i = 0; i < materialCost.Length; ++i)
         {
-            gameState.AddResource(materialCost[i].Resource, materialCost[i].Cost * RefundFac);
+            gameState.AddResource(
+                materialCost[i].Resource, 
+                materialCost[i].Cost * REFUND_FACTOR);
         }
 
         gameState.RemoveStructure(info.Identifier, amount);

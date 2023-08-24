@@ -37,7 +37,7 @@ public partial class UIStructures : Node
 
         for (int i = 0, l = gridContainer.GetChildCount(); i < l; ++i)
         {
-            UIStructure structure = gridContainer.GetChildOrNull<UIStructure>(i);
+            var structure = gridContainer.GetChildOrNull<UIStructure>(i);
             structure?.Update(data[i]);
         }
     }

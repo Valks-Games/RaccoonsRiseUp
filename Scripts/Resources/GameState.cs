@@ -11,7 +11,7 @@ public sealed partial class GameState : Resource
     public event Action<JobDict> JobsChanged;
     public event Action<StructureDict> StructuresChanged;
 
-    [Export] public JobData[] JobData;
+    [Export] JobData[] jobData;
     [Export] TechDataService techDataService;
     [Export] StructureDataService structureDataService;
 
@@ -195,9 +195,7 @@ public sealed partial class GameState : Resource
     public void ConsumeResources(ReadOnlySpan<ResourceRequirement> requirements)
     {
         for (int i = 0; i < requirements.Length; ++i)
-        {
             Resources[requirements[i].Type] -= requirements[i].Amount;
-        }
 
         UpdateResources();
     }

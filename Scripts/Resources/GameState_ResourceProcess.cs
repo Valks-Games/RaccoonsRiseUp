@@ -5,7 +5,8 @@ public sealed partial class GameState
     // Change this depending on the needs of the project, but this should
     // be enough for the time being
     // Consider increasing it if
-    // (tech upgrades count + job type count + structure type count) > current modifier limit
+    // (tech upgrades count + job type count + structure type count) >
+    // current modifier limit
     const int MAX_MODIFIERS = 64;
 
     public void ProcessResourceTick(double delta)
@@ -16,7 +17,7 @@ public sealed partial class GameState
         int modifierIdx = 0;
 
         // Add job + structure modifiers
-        ReadOnlySpan<JobData> jobs = JobData;
+        ReadOnlySpan<JobData> jobs = jobData;
 
         for (int i = 0; i < jobs.Length; ++i)
         {
@@ -58,11 +59,8 @@ public sealed partial class GameState
         {
             StructureDataInfo structure = structureInfo[i];
 
-            if (!Structures.TryGetValue(structure.Identifier, out int count) ||
-                count < 1)
-            {
+            if (!Structures.TryGetValue(structure.Identifier, out int count) || count < 1)
                 continue;
-            }
 
             ReadOnlySpan<StructureHarvestInfo> harvest = structure.HarvestInfo;
 
@@ -189,7 +187,7 @@ public sealed partial class GameState
             return;
 
         modifiers[index] = modifier;
-        index ++;
+        index++;
     }
 
     /// <summary>

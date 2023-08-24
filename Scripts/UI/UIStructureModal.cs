@@ -2,12 +2,11 @@ namespace RRU;
 
 public partial class UIStructureModal : Panel
 {
-    static StringName PropPanel
-        => "theme_override_styles/panel";
-
     /// args: 0 => success
     public event Action<bool> OnClosed;
-    static event Action<UIStructureModal> OnRequestExclusive;
+    static event Action<UIStructureModal> onRequestExclusive;
+
+    static StringName propPanel => "theme_override_styles/panel";
 
     Label labelTitle;
 
@@ -28,7 +27,7 @@ public partial class UIStructureModal : Panel
         Visible = false;
 
         // Stylebox config
-        stylebox = (StyleBoxFlat) Get(PropPanel);
+        stylebox = (StyleBoxFlat) Get(propPanel);
         stylebox = (StyleBoxFlat) stylebox.Duplicate();
 
         activeColour = stylebox.BgColor;
@@ -36,7 +35,7 @@ public partial class UIStructureModal : Panel
         inactiveColour = stylebox.BgColor;
         inactiveColour.A = 0.0f;
 
-        Set(PropPanel, stylebox);
+        Set(propPanel, stylebox);
 
         // Get //
 
@@ -50,7 +49,7 @@ public partial class UIStructureModal : Panel
         buttonConfirm.Pressed += () => OnClose(true);
         buttonAbort.Pressed += () => OnClose(false);
 
-        OnRequestExclusive += OnExclusiveRequest;
+        onRequestExclusive += OnExclusiveRequest;
     }
 
     public override void _Notification(int what)
@@ -58,7 +57,7 @@ public partial class UIStructureModal : Panel
         if (what != GodotObject.NotificationPredelete)
             return;
 
-        OnRequestExclusive -= OnExclusiveRequest;
+        onRequestExclusive -= OnExclusiveRequest;
     }
 
     /// Events ///
@@ -79,17 +78,13 @@ public partial class UIStructureModal : Panel
 
     /// Modal ///
 
-    public void SetTitle(string text)
-    {
+    public void SetTitle(string text) => 
         labelTitle.Text = text;
-    }
 
     public void SetVisible(bool visible)
     {
         if (IsInstanceValid(tween) && tween.IsRunning())
-        {
             tween.Kill();
-        }
 
         if (visible == lastVisible)
             return;
@@ -99,7 +94,7 @@ public partial class UIStructureModal : Panel
 
         if (visible)
         {
-            OnRequestExclusive?.Invoke(this);
+            onRequestExclusive?.Invoke(this);
             Visible = true;
         }
 
@@ -111,9 +106,7 @@ public partial class UIStructureModal : Panel
         );
 
         if (!visible)
-        {
             tween.TweenCallback(Callable.From(() => Visible = false));
-        }
 
         Tween viewTween = CreateTween();
         AnimateView(visible, ref viewTween);
