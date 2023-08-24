@@ -1,13 +1,11 @@
 namespace RRU;
 
-// Sealed was added because no class will extend from this class
 public sealed partial class GameState
 {
     // Change this depending on the needs of the project, but this should
     // be enough for the time being
     // Consider increasing it if
-    // (tech upgrades count + job type count + structure type count) >
-    // current modifier limit
+    // (tech upgrades count + job type count + structure type count) > current modifier limit
     const int MAX_MODIFIERS = 64;
 
     public void ProcessResourceTick(double delta)
@@ -15,78 +13,51 @@ public sealed partial class GameState
         Span<IResourceModifier> modifiers = 
             new IResourceModifier[MAX_MODIFIERS];
 
-        int modifierId = 0;
+        int modifierIdx = 0;
 
-        // Not sure if these should be passed as ref params or not
-        AddJobModifiers(delta, ref modifiers, ref modifierId);
-        AddStructureModifiers(delta, ref modifiers, ref modifierId);
-        AddTechModifiers(delta, ref modifiers, ref modifierId);
-
-        modifiers = modifiers[..modifierId];
-        EvaluateModifiers(modifiers, delta);
-    }
-
-    void AddJobModifiers(
-        double delta, 
-        ref Span<IResourceModifier> modifiers,
-        ref int modifierId)
-    {
+        // Add job + structure modifiers
         ReadOnlySpan<JobData> jobs = JobData;
 
         for (int i = 0; i < jobs.Length; ++i)
-            AppendToResourceModifierSpan(
-                modifier: jobs[i],
-                delta: delta,
-                modifiers: ref modifiers,
-                index: ref modifierId);
-    }
+        {
+            AppendToSpan(jobs[i], delta, ref modifiers, ref modifierIdx);
+        }
 
-    void AddStructureModifiers(
-        double delta,
-        ref Span<IResourceModifier> modifiers,
-        ref int modifierId)
-    {
-        // TODO: Add structure modifiers
-    }
+        // TODO: Add structure-related instructions once it is implemented
 
-    void AddTechModifiers(
-        double delta,
-        ref Span<IResourceModifier> modifiers,
-        ref int modifierId)
-    {
-        // Add tech modifiers
+        // Add upgrade modifiers
         Span<TechUpgradeInfo> techUpgrades = default;
-
-        // dataService is a Godot resource defined in GameState.cs
         dataService.GetResearchedUpgrades(ref techUpgrades);
 
         for (int i = 0; i < techUpgrades.Length; ++i)
         {
-            ReadOnlySpan<ResourceModifierDefinition> modifierDefs =
+            ReadOnlySpan<ResourceModifierDefinition> modifierDefs = 
                 techUpgrades[i].Modifiers;
 
             for (int j = 0; j < modifierDefs.Length; ++j)
             {
-                AppendToResourceModifierSpan(
-                    modifierDefs[j],
+                AppendToSpan(
+                    modifierDefs[j], 
                     delta,
-                    ref modifiers,
-                    ref modifierId);
+                    ref modifiers, 
+                    ref modifierIdx);
             }
         }
+
+        modifiers = modifiers[..modifierIdx];
+        EvaluateModifiers(modifiers, delta);
     }
 
     /// <summary>
     /// Performs the actual evaluation of resource modifiers.
     /// </summary>
+    /// <param name="modifiers"></param>
+    /// <param name="delta"></param>
     void EvaluateModifiers(Span<IResourceModifier> modifiers, double delta)
     {
         ReadOnlySpan<ResourceType> resourceTypes = default;
         GetResourceTypes(ref resourceTypes);
 
-        // stackalloc is used to put ResourceMultiplier[resourceTypes.Length]
-        // on the stack as suppose to the heap. Doing this will remove the
-        // need for garbage collection.
         Span<ResourceMultiplier> multipliers =
             stackalloc ResourceMultiplier[resourceTypes.Length];
 
@@ -127,13 +98,11 @@ public sealed partial class GameState
             ResourceModifier modifier = default;
             modifiers[i].ModifierGet(this, ref modifier);
 
-            // Only get multiplicative modifiers
             if (modifier.Type != ResourceModifierType.Multiplicative)
                 continue;
 
             for (int j = 0; j < multipliers.Length; ++j)
             {
-                // Only get the correct resource types
                 if (multipliers[j].Resource != modifier.Resource)
                     continue;
 
@@ -162,22 +131,20 @@ public sealed partial class GameState
             ResourceModifier modifier = default;
             modifiers[i].ModifierGet(this, ref modifier);
 
-            // Only get the additive modifiers
             if (modifier.Type != ResourceModifierType.Additive)
                 continue;
 
             double modTotal = 
                 GetMultiplier(multipliers, modifier.Resource) * modifier.Amount;
 
-            // Not sure why Mathf.Max is used here
             Resources[modifier.Resource] =
-                Mathf.Max(0, Resources[modifier.Resource] + modTotal);
+                Mathf.Max(0.0f, Resources[modifier.Resource] + modTotal);
         }
     }
 
     /// Helpers ///
 
-    void AppendToResourceModifierSpan(
+    void AppendToSpan(
         IResourceModifier modifier,
         double delta,
         ref Span<IResourceModifier> modifiers,
@@ -188,19 +155,16 @@ public sealed partial class GameState
             return;
 
         modifiers[index] = modifier;
-        index++;
+        index ++;
     }
 
     /// <summary>
     /// Returns the accumulated multiplier for a given resource type.
     /// </summary>
-    double GetMultiplier(
-        Span<ResourceMultiplier> multipliers, 
-        ResourceType type)
+    double GetMultiplier(Span<ResourceMultiplier> multipliers, ResourceType type)
     {
         for (int j = 0; j < multipliers.Length; ++j)
         {
-            // Get the multipliers for this resource
             if (type != multipliers[j].Resource)
                 continue;
 
@@ -224,8 +188,7 @@ public sealed partial class GameState
 }
 
 /// <summary>
-/// This interface must be implemented, if one wishes to make changes 
-/// to the game state's resources.
+/// This interface must be implemented, if one wishes to make changes to the game state's resources.
 /// </summary>
 public interface IResourceModifier
 {
@@ -239,8 +202,6 @@ public enum ResourceModifierType
     Multiplicative
 }
 
-// ref struct ensures the struct is allocated onto the stack as suppose to
-// the heap. Not sure why this is needed or what other benefits this entails.
 public ref struct ResourceModifier
 {
     public readonly ResourceType Resource;
