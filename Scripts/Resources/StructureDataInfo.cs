@@ -26,7 +26,7 @@ public sealed partial class StructureDataInfo : Resource
         // Store its identifier as metadata in its associated harvest info.
         // This will be used in its IResourceModifier's 'tick' process
         // to find the correct 'count' for each structure.
-        for (int i = 0; i < HarvestInfo.Length; ++ i)
+        for (int i = 0; i < HarvestInfo.Length; ++i)
         {
             HarvestInfo[i].SetMeta(
                 name: StructureHarvestInfo.KeyStructureId,

@@ -79,11 +79,13 @@ public partial class UIStructure : Node
 
     void OnActionCountSubmitted(string _)
     {
-        countField.GetLineEdit().ReleaseFocus();
+        ReleaseCountFieldFocus();
     }
 
     void OnBuyPressed()
     {
+        ReleaseCountFieldFocus();
+
         if (configModalConfirm)
         {
             ShowModal(true);
@@ -95,6 +97,8 @@ public partial class UIStructure : Node
 
     void OnSellPressed()
     {
+        ReleaseCountFieldFocus();
+
         if (configModalConfirm)
         {
             ShowModal(false);
@@ -121,6 +125,11 @@ public partial class UIStructure : Node
     }
 
     /// Helpers ///
+
+    void ReleaseCountFieldFocus()
+    {
+        countField.GetLineEdit().ReleaseFocus();
+    }
 
     /// <summary>
     /// Must only be called during the 'setup' phase.
