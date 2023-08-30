@@ -1,0 +1,79 @@
+[gd_scene load_steps=7 format=3 uid="uid://blyyt7i04u62a"]
+
+[ext_resource type="Script" path="res://ResourceEditor/Scripts/UIInspectorStructure.cs" id="1_hpur5"]
+[ext_resource type="PackedScene" uid="uid://brdkkki7ijxiq" path="res://ResourceEditor/Scenes/Components/ui_comp_params_edit_list_view.tscn" id="1_xvjbt"]
+[ext_resource type="PackedScene" uid="uid://cq8o1d7md713a" path="res://ResourceEditor/Scenes/Components/ui_comp_cell_cost.tscn" id="2_5v026"]
+[ext_resource type="PackedScene" uid="uid://jkq5g8a1pwx4" path="res://ResourceEditor/Scenes/Components/ui_comp_image_well.tscn" id="2_vn3au"]
+[ext_resource type="PackedScene" uid="uid://bdsvh0ini0268" path="res://ResourceEditor/Scenes/Components/ui_comp_cell_harvest.tscn" id="3_wkngp"]
+[ext_resource type="PackedScene" uid="uid://c5j857c31bruy" path="res://ResourceEditor/Scenes/Components/ui_modal_icon_browser.tscn" id="5_3ebeu"]
+
+[node name="GridContainer" type="GridContainer"]
+offset_right = 431.0
+offset_bottom = 428.0
+size_flags_horizontal = 3
+theme_override_constants/v_separation = 15
+columns = 2
+script = ExtResource("1_hpur5")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "Identifier:"
+
+[node name="Identifier" type="LineEdit" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "e.g. loghouse"
+
+[node name="Label2" type="Label" parent="."]
+layout_mode = 2
+text = "Display Name:"
+
+[node name="Name" type="LineEdit" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "e.g. Log House"
+
+[node name="Label3" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Icon"
+
+[node name="Icon" parent="." node_paths=PackedStringArray("iconBrowser") instance=ExtResource("2_vn3au")]
+unique_name_in_owner = true
+layout_mode = 2
+iconBrowser = NodePath("../IconBrowser")
+
+[node name="Label4" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Cost"
+
+[node name="CostList" parent="." node_paths=PackedStringArray("template") instance=ExtResource("1_xvjbt")]
+unique_name_in_owner = true
+layout_mode = 2
+template = NodePath("ContentView/CostCell")
+
+[node name="CostCell" parent="CostList/ContentView" index="0" instance=ExtResource("2_5v026")]
+layout_mode = 2
+
+[node name="Label5" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Harvest Data"
+
+[node name="HarvestList" parent="." node_paths=PackedStringArray("template") instance=ExtResource("1_xvjbt")]
+unique_name_in_owner = true
+layout_mode = 2
+template = NodePath("ContentView/CostHarvest")
+
+[node name="CostHarvest" parent="HarvestList/ContentView" index="0" instance=ExtResource("3_wkngp")]
+layout_mode = 2
+
+[node name="IconBrowser" parent="." instance=ExtResource("5_3ebeu")]
+unique_name_in_owner = true
+visible = false
+
+[editable path="CostList"]
+[editable path="HarvestList"]

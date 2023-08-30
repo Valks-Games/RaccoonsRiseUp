@@ -1,0 +1,90 @@
+[gd_scene load_steps=8 format=3 uid="uid://nrwov7fje2yh"]
+
+[ext_resource type="Script" path="res://ResourceEditor/Scripts/ResourceEditorMain.cs" id="1_ongm2"]
+[ext_resource type="PackedScene" uid="uid://budlph7md2rgf" path="res://ResourceEditor/Scenes/Components/ui_comp_data_list_view.tscn" id="2_52vcb"]
+[ext_resource type="Resource" uid="uid://7lt0byaqcwg6" path="res://Resources/res_shared_game_state.tres" id="2_konid"]
+[ext_resource type="PackedScene" uid="uid://bpqsti1gp6s86" path="res://ResourceEditor/Scenes/Components/ui_comp_inspector.tscn" id="2_x6s2c"]
+[ext_resource type="Resource" uid="uid://bq25wiv36tld1" path="res://Resources/res_shared_tech_data_service.tres" id="3_b31n2"]
+[ext_resource type="Resource" uid="uid://bl06cl5gsg4os" path="res://Resources/res_shared_structure_data_service.tres" id="4_5e58g"]
+[ext_resource type="Resource" uid="uid://dfpt2hkj0vka8" path="res://ResourceEditor/Resources/editor_upgrades_discoverability.tres" id="5_uoo8e"]
+
+[node name="Editor" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ongm2")
+gameState = ExtResource("2_konid")
+techDataService = ExtResource("3_b31n2")
+structureDataService = ExtResource("4_5e58g")
+upgradesDiscoverability = ExtResource("5_uoo8e")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HSplitContainer2" type="HSplitContainer" parent="MarginContainer"]
+layout_mode = 2
+split_offset = -490
+
+[node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer/HSplitContainer2"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+
+[node name="TabContainer" type="TabContainer" parent="MarginContainer/HSplitContainer2/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Structures" parent="MarginContainer/HSplitContainer2/HSplitContainer/TabContainer" instance=ExtResource("2_52vcb")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Title" parent="MarginContainer/HSplitContainer2/HSplitContainer/TabContainer/Structures/VBoxContainer/Panel/MarginContainer" index="0"]
+text = "Structures"
+
+[node name="Data" parent="MarginContainer/HSplitContainer2/HSplitContainer/TabContainer/Structures/VBoxContainer" index="1"]
+fixed_icon_size = Vector2i(24, 24)
+
+[node name="Tech Upgrades" parent="MarginContainer/HSplitContainer2/HSplitContainer/TabContainer" instance=ExtResource("2_52vcb")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Title" parent="MarginContainer/HSplitContainer2/HSplitContainer/TabContainer/Tech Upgrades/VBoxContainer/Panel/MarginContainer" index="0"]
+text = "Tech Upgrades"
+
+[node name="Data" parent="MarginContainer/HSplitContainer2/HSplitContainer/TabContainer/Tech Upgrades/VBoxContainer" index="1"]
+fixed_icon_size = Vector2i(24, 24)
+
+[node name="Jobs" parent="MarginContainer/HSplitContainer2/HSplitContainer/TabContainer" instance=ExtResource("2_52vcb")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Title" parent="MarginContainer/HSplitContainer2/HSplitContainer/TabContainer/Jobs/VBoxContainer/Panel/MarginContainer" index="0"]
+text = "Jobs"
+
+[node name="Data" parent="MarginContainer/HSplitContainer2/HSplitContainer/TabContainer/Jobs/VBoxContainer" index="1"]
+fixed_icon_size = Vector2i(24, 24)
+
+[node name="HBoxContainer" parent="MarginContainer/HSplitContainer2/HSplitContainer/TabContainer/Jobs/VBoxContainer" index="2"]
+visible = false
+
+[node name="Inspector" parent="MarginContainer/HSplitContainer2" instance=ExtResource("2_x6s2c")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[editable path="MarginContainer/HSplitContainer2/HSplitContainer/TabContainer/Structures"]
+[editable path="MarginContainer/HSplitContainer2/HSplitContainer/TabContainer/Tech Upgrades"]
+[editable path="MarginContainer/HSplitContainer2/HSplitContainer/TabContainer/Jobs"]

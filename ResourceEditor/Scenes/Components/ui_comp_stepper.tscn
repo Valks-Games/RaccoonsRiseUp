@@ -1,0 +1,29 @@
+[gd_scene load_steps=2 format=3 uid="uid://drc1awb0pn3u2"]
+
+[ext_resource type="Script" path="res://ResourceEditor/Scripts/UIStepperControl.cs" id="1_xpkuu"]
+
+[node name="Stepper" type="HBoxContainer"]
+offset_right = 107.0
+offset_bottom = 31.0
+script = ExtResource("1_xpkuu")
+
+[node name="Value" type="LineEdit" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Decrease" type="Button" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 5
+text = "-"
+
+[node name="Increase" type="Button" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 5
+text = "+"

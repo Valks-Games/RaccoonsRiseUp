@@ -2,6 +2,7 @@
 
 public partial class Game
 {
+    [Obsolete]
     public static Dictionary<TechType, TechData> TechData { get; } = new()
     {
         {
@@ -21,6 +22,7 @@ public partial class Game
     };
 }
 
+[Obsolete]
 public class TechData
 {
     public string ImagePath { get; set; }
@@ -30,6 +32,7 @@ public class TechData
         ResourceLoader.Load<Texture2D>($"res://Sprites/Icons/{ImagePath}.svg");
 }
 
+[Obsolete]
 public enum TechType
 {
     WoodEffeciency,

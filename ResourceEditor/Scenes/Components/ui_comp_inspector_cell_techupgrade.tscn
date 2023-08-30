@@ -1,0 +1,110 @@
+[gd_scene load_steps=8 format=3 uid="uid://berftd2k47q5j"]
+
+[ext_resource type="Script" path="res://ResourceEditor/Scripts/UIInspectorTechUpgrades.cs" id="1_6c4wy"]
+[ext_resource type="PackedScene" uid="uid://brdkkki7ijxiq" path="res://ResourceEditor/Scenes/Components/ui_comp_params_edit_list_view.tscn" id="2_vc4gn"]
+[ext_resource type="PackedScene" uid="uid://cq8o1d7md713a" path="res://ResourceEditor/Scenes/Components/ui_comp_cell_cost.tscn" id="3_hi3oy"]
+[ext_resource type="PackedScene" uid="uid://2sss825qy2ih" path="res://ResourceEditor/Scenes/Components/ui_comp_cell_prerequisite.tscn" id="3_rv4ga"]
+[ext_resource type="PackedScene" uid="uid://dcmog1pnmi162" path="res://ResourceEditor/Scenes/Components/ui_comp_cell_modifier.tscn" id="5_d10s3"]
+[ext_resource type="PackedScene" uid="uid://jkq5g8a1pwx4" path="res://ResourceEditor/Scenes/Components/ui_comp_image_well.tscn" id="6_r4sus"]
+[ext_resource type="PackedScene" uid="uid://c5j857c31bruy" path="res://ResourceEditor/Scenes/Components/ui_modal_icon_browser.tscn" id="7_0x6sl"]
+
+[node name="GridContainer" type="GridContainer"]
+offset_right = 442.0
+offset_bottom = 422.0
+theme_override_constants/v_separation = 15
+columns = 2
+script = ExtResource("1_6c4wy")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Identifier:"
+
+[node name="Identifier" type="LineEdit" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "e.g. wood1"
+
+[node name="Label2" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Display Name:"
+
+[node name="Name" type="LineEdit" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "e.g. Wood Upgrade"
+
+[node name="Label3" type="Label" parent="."]
+layout_mode = 2
+text = "Icon:"
+
+[node name="Icon" parent="." node_paths=PackedStringArray("iconBrowser") instance=ExtResource("6_r4sus")]
+unique_name_in_owner = true
+layout_mode = 2
+iconBrowser = NodePath("../IconBrowser")
+
+[node name="Label7" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Description:"
+
+[node name="Description" type="TextEdit" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+placeholder_text = "e.g. Increases wood production by a bit."
+
+[node name="Label4" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Prerequisites:"
+
+[node name="Prerequisites" parent="." node_paths=PackedStringArray("template") instance=ExtResource("2_vc4gn")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 90)
+layout_mode = 2
+size_flags_horizontal = 3
+template = NodePath("ContentView/PrerequisiteCell")
+
+[node name="PrerequisiteCell" parent="Prerequisites/ContentView" index="0" instance=ExtResource("3_rv4ga")]
+layout_mode = 2
+
+[node name="Label6" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Cost:"
+
+[node name="Cost" parent="." node_paths=PackedStringArray("template") instance=ExtResource("2_vc4gn")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 90)
+layout_mode = 2
+size_flags_horizontal = 3
+template = NodePath("ContentView/CostCell")
+
+[node name="CostCell" parent="Cost/ContentView" index="0" instance=ExtResource("3_hi3oy")]
+layout_mode = 2
+
+[node name="Label5" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Modifiers:"
+
+[node name="Modifiers" parent="." node_paths=PackedStringArray("template") instance=ExtResource("2_vc4gn")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 90)
+layout_mode = 2
+size_flags_horizontal = 3
+template = NodePath("ContentView/ModifierCell")
+
+[node name="ModifierCell" parent="Modifiers/ContentView" index="0" instance=ExtResource("5_d10s3")]
+layout_mode = 2
+
+[node name="IconBrowser" parent="." instance=ExtResource("7_0x6sl")]
+unique_name_in_owner = true
+
+[editable path="Prerequisites"]
+[editable path="Cost"]
+[editable path="Modifiers"]

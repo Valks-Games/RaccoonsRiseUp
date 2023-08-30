@@ -1,0 +1,55 @@
+[gd_scene load_steps=4 format=3 uid="uid://bdsvh0ini0268"]
+
+[ext_resource type="Script" path="res://ResourceEditor/Scripts/UICellHarvest.cs" id="1_8bfxx"]
+[ext_resource type="Resource" uid="uid://7lt0byaqcwg6" path="res://Resources/res_shared_game_state.tres" id="2_yxp1s"]
+[ext_resource type="PackedScene" uid="uid://drc1awb0pn3u2" path="res://ResourceEditor/Scenes/Components/ui_comp_stepper.tscn" id="3_bq33n"]
+
+[node name="CostHarvest" type="HBoxContainer"]
+offset_right = 311.0
+offset_bottom = 61.0
+theme_override_constants/separation = 5
+script = ExtResource("1_8bfxx")
+gameState = ExtResource("2_yxp1s")
+
+[node name="Delete" type="Button" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(33, 4)
+layout_mode = 2
+size_flags_vertical = 4
+text = "X"
+
+[node name="HBoxContainer3" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer3"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer3/HBoxContainer"]
+layout_mode = 2
+text = "Harvests "
+
+[node name="Resource" type="OptionButton" parent="HBoxContainer3/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer3"]
+layout_mode = 2
+
+[node name="Rate" parent="HBoxContainer3/HBoxContainer2" instance=ExtResource("3_bq33n")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+PrefixString = "Rate:"
+MinValue = 0.01
+MaxValue = 1000.0
+StepSize = 0.01
+
+[node name="Amount" parent="HBoxContainer3/HBoxContainer2" instance=ExtResource("3_bq33n")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+PrefixString = "x"
+MinValue = 1.0
+MaxValue = 1000.0

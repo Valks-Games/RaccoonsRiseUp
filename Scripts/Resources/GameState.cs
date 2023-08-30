@@ -91,6 +91,9 @@ public sealed partial class GameState : Resource
     public void GetJobTypes(ref ReadOnlySpan<JobType> types) =>
         types = jobTypes;
 
+    public void GetJobData(ref ReadOnlySpan<JobData> data) =>
+        data = jobData;
+
     public bool AddJob(JobType job)
     {
         if (Raccoons <= 0)
