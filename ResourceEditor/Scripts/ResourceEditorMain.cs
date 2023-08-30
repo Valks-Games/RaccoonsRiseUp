@@ -2,13 +2,17 @@ using System.Runtime.InteropServices;
 
 namespace RRU.ResourceEditor;
 
+[GlobalClass]
 public sealed partial class ResourceEditorMain : Control, IDataListViewDataProvider, IEditorContextWriter, IEditorTechUpgradeDiscoverability
 {
-    [Export] GameState gameState;
-    [Export] TechDataService techDataService;
-    [Export] StructureDataService structureDataService;
-
+    [Export(PropertyHint.File)] string pathResourceGameState;
+    [Export(PropertyHint.File)] string pathResourceTechDataService;
+    [Export(PropertyHint.File)] string pathResourceStructureDataService;
     [Export] EditorTechUpgradeDiscoverability upgradesDiscoverability;
+
+    GameState gameState;
+    TechDataService techDataService;
+    StructureDataService structureDataService;
 
     UIDataListView techUpgradesListView;
     UIDataListView structuresListView;
@@ -21,6 +25,15 @@ public sealed partial class ResourceEditorMain : Control, IDataListViewDataProvi
 
     public override void _Ready()
     {
+        gameState = ResourceLoader
+        .Load<GameState>(pathResourceGameState);
+
+        techDataService = ResourceLoader
+            .Load<TechDataService>(pathResourceTechDataService);
+
+        structureDataService = ResourceLoader
+            .Load<StructureDataService>(pathResourceStructureDataService);
+
         // Get
         inspector = GetNode<UIDataInspector>("%Inspector");
         techUpgradesListView = GetNode<UIDataListView>("%Tech Upgrades");
@@ -31,6 +44,8 @@ public sealed partial class ResourceEditorMain : Control, IDataListViewDataProvi
         techUpgradesListView.DataProvider = this;
         structuresListView.DataProvider = this;
         jobsListView.DataProvider = this;
+
+        InitialUpdate();
 
         ReadOnlySpan<StructureDataInfo> structures = default;
         ReadOnlySpan<TechUpgradeInfo> upgrades = default;
@@ -57,12 +72,28 @@ public sealed partial class ResourceEditorMain : Control, IDataListViewDataProvi
         gameState.GetJobTypes(ref jobTypes);
         gameState.GetJobData(ref jobData);
 
-        Span<JobType> unassignedJobs =
-            stackalloc JobType[jobTypes.Length];
-
-        for (int i = 0; i < jobData.Length; ++i)
+        for (int i = 0; i < jobTypes.Length; ++i)
         {
-            mutableJobs.Add(jobData[i]);
+            bool hasData = false;
+
+            for (int j = 0; j < jobData.Length; ++j)
+            {
+                if (jobData[j].Job != jobTypes[i])
+                    continue;
+
+                hasData = true;
+
+                mutableJobs.Add(jobData[j]);
+                break;
+            }
+
+            if (hasData)
+                continue;
+
+            mutableJobs.Add(new()
+            {
+                Job = jobTypes[i]
+            });
         }
 
         upgradesDiscoverability.BecomeResponder(this);
@@ -78,9 +109,24 @@ public sealed partial class ResourceEditorMain : Control, IDataListViewDataProvi
             => OnItemSelected(jobsListView, idx);
     }
 
+    async void InitialUpdate()
+    {
+        await GUtils.WaitOneFrame(this);
+
+        techUpgradesListView.Update();
+        structuresListView.Update();
+        jobsListView.Update();
+    }
+
     void WriteToDisk()
     {
-        // TODO: Implement Disk Write
+        gameState._SetJobData(mutableJobs.ToArray());
+        techDataService._SetUpgrades(mutableUpgrades.ToArray());
+        structureDataService._SetStructures(mutableStructures.ToArray());
+
+        ResourceSaver.Save(gameState, pathResourceGameState);
+        ResourceSaver.Save(techDataService, pathResourceTechDataService);
+        ResourceSaver.Save(structureDataService, pathResourceStructureDataService);
     }
 
     void OnItemSelected(UIDataListView listView, int idx)
@@ -97,10 +143,7 @@ public sealed partial class ResourceEditorMain : Control, IDataListViewDataProvi
         }
         else if (listView == jobsListView)
         {
-            ReadOnlySpan<JobData> jobs = default;
-            gameState.GetJobData(ref jobs);
-
-            data = jobs[idx];
+            data = mutableJobs[idx];
         }
 
         inspector.SetContents(data, idx, this);
@@ -120,10 +163,7 @@ public sealed partial class ResourceEditorMain : Control, IDataListViewDataProvi
         }
         else if (listView == jobsListView)
         {
-            ReadOnlySpan<JobType> jobs = default;
-            gameState.GetJobTypes(ref jobs);
-
-            return jobs.Length;
+            return mutableJobs.Count;
         }
 
         return 0;
@@ -134,9 +174,7 @@ public sealed partial class ResourceEditorMain : Control, IDataListViewDataProvi
         if (listView == techUpgradesListView)
         {
             TechUpgradeInfo upgrade = mutableUpgrades[index];
-            TechInfo info = TechInfo.FromType(upgrade.Id, upgrade.UpgradeType);
-
-            return new(upgrade.DisplayName, info.Data.GetImage());
+            return new(upgrade.DisplayName, upgrade.Icon);
         }
         else if (listView == structuresListView)
         {
@@ -145,10 +183,7 @@ public sealed partial class ResourceEditorMain : Control, IDataListViewDataProvi
         }
         else if (listView == jobsListView)
         {
-            ReadOnlySpan<JobType> jobs = default;
-            gameState.GetJobTypes(ref jobs);
-
-            return new(jobs[index].ToString());
+            return new(mutableJobs[index].Job.ToString());
         }
 
         return new(null);
@@ -158,6 +193,14 @@ public sealed partial class ResourceEditorMain : Control, IDataListViewDataProvi
     {
         if (listView == techUpgradesListView)
         {
+            mutableUpgrades.Add(new()
+            {
+                Id = "",
+                DisplayName = "New Upgrade",
+                UpgradeCost = new ResourceRequirement[0],
+                RequiredUpgradeIds = new string[0],
+                Modifiers = new ResourceModifierDefinition[0]
+            });
         }
         else if (listView == structuresListView)
         {
@@ -187,11 +230,22 @@ public sealed partial class ResourceEditorMain : Control, IDataListViewDataProvi
 
     public void EditorPerformWrite<[MustBeVariant] T>(int index, T data)
     {
-        if (data is StructureDataInfo structureInfo)
+        if (data is TechUpgradeInfo upgradeInfo)
+        {
+            mutableUpgrades[index] = upgradeInfo;
+            techUpgradesListView.Update();
+        }
+        else if (data is StructureDataInfo structureInfo)
         {
             mutableStructures[index] = structureInfo;
             structuresListView.Update();
         }
+        else if (data is JobData jobData)
+        {
+            mutableJobs[index] = jobData;
+        }
+
+        WriteToDisk();
     }
 
     /// Upgrade Discoverability ///

@@ -1,14 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://bpqsti1gp6s86"]
+[gd_scene load_steps=5 format=3 uid="uid://bpqsti1gp6s86"]
 
 [ext_resource type="Script" path="res://ResourceEditor/Scripts/UIDataInspector.cs" id="1_ktc57"]
 [ext_resource type="PackedScene" uid="uid://blyyt7i04u62a" path="res://ResourceEditor/Scenes/Components/ui_comp_inspector_cell_structure.tscn" id="2_qa3o3"]
 [ext_resource type="PackedScene" uid="uid://berftd2k47q5j" path="res://ResourceEditor/Scenes/Components/ui_comp_inspector_cell_techupgrade.tscn" id="3_vpkxp"]
+[ext_resource type="PackedScene" uid="uid://di322al6hbygw" path="res://ResourceEditor/Scenes/Components/ui_comp_inspector_cell_job.tscn" id="4_b1t4n"]
 
 [node name="Inspector" type="Panel"]
 custom_minimum_size = Vector2(320, 400)
 script = ExtResource("1_ktc57")
 pkgStructureInspector = ExtResource("2_qa3o3")
 pkgTechUpgradeInspector = ExtResource("3_vpkxp")
+pkgJobDataInspector = ExtResource("4_b1t4n")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1

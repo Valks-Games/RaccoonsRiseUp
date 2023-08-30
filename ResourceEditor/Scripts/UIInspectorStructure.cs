@@ -1,6 +1,6 @@
 namespace RRU.ResourceEditor;
 
-public partial class UIInspectorStructure : BaseInspectorView, IEditParamsListViewSyncDataProvider
+public sealed partial class UIInspectorStructure : BaseInspectorView, IEditParamsListViewSyncDataProvider
 {
     UIEditParamsListView listCost;
     UIEditParamsListView listHarvest;

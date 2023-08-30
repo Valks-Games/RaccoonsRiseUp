@@ -6,8 +6,8 @@ public sealed partial class JobData : Resource, IResourceModifier
     [Export] public JobType Job;
     [Export] public ResourceType ResourceType;
 
-    [Export] double gatherRate;
-    [Export] double gatherAmount;
+    [Export] public double GatherRate;
+    [Export] public double GatherAmount;
 
     double elapsedTime;
 
@@ -20,7 +20,7 @@ public sealed partial class JobData : Resource, IResourceModifier
 
         elapsedTime += delta;
 
-        if (elapsedTime < gatherRate)
+        if (elapsedTime < GatherRate)
             return false;
 
         elapsedTime = 0.0f;
@@ -32,7 +32,7 @@ public sealed partial class JobData : Resource, IResourceModifier
         modifier = new(
             ResourceType,
             ResourceModifierType.Additive,
-            gatherAmount * context.Jobs[Job]
+            GatherAmount * context.Jobs[Job]
         );
     }
 }

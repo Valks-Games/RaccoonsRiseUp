@@ -62,7 +62,6 @@ public sealed partial class UICellHarvest : BaseEditParamsCell
     void OnRateChanged(float rate)
     {
         info.HarvestRate = stepperRate.Value;
-        GD.Print(rate);
         UpdateSource();
     }
 

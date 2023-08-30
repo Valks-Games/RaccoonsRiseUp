@@ -26,15 +26,6 @@ public sealed partial class UIDataListView : Control
         buttonRemove.Pressed += OnRemoveItem;
 
         listView.ItemSelected += OnItemSelected;
-
-        await GUtils.WaitOneFrame(this);
-
-        Debug.Assert(
-            condition: DataProvider != null,
-            message: "UIDataListView: No data providers are assigned!"
-        );
-
-        Update();
     }
 
     void OnItemSelected(long idx)

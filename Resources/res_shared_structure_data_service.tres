@@ -1,11 +1,12 @@
-[gd_resource type="Resource" script_class="StructureDataService" load_steps=14 format=3 uid="uid://bl06cl5gsg4os"]
+[gd_resource type="Resource" script_class="StructureDataService" load_steps=19 format=3]
 
 [ext_resource type="Script" path="res://Scripts/Resources/StructureDataService.cs" id="1_ul2dr"]
 [ext_resource type="Script" path="res://Scripts/Resources/ResourceRequirement.cs" id="2_4c5j1"]
 [ext_resource type="Script" path="res://Scripts/Resources/StructureDataInfo.cs" id="2_g1c57"]
-[ext_resource type="Texture2D" uid="uid://b4380kyc02ue" path="res://Sprites/Icons/wood-pile.svg" id="2_rw13k"]
+[ext_resource type="Texture2D" path="res://Sprites/Icons/wood-pile.svg" id="2_rw13k"]
 [ext_resource type="Script" path="res://Scripts/Resources/StructureHarvestInfo.cs" id="3_n1tjh"]
-[ext_resource type="Texture2D" uid="uid://uhsxpc05arol" path="res://Sprites/Icons/double-ringed-orb.svg" id="4_lor8m"]
+[ext_resource type="Texture2D" path="res://Sprites/Icons/double-ringed-orb.svg" id="4_lor8m"]
+[ext_resource type="Texture2D" path="res://Sprites/Icons/telescope.svg" id="7_0quyy"]
 
 [sub_resource type="Resource" id="Resource_j4goh"]
 script = ExtResource("2_4c5j1")
@@ -18,14 +19,15 @@ script = ExtResource("3_n1tjh")
 HarvestType = 0
 HarvestRate = 1.5
 HarvestAmount = 3.0
+metadata/sId = &"lumber"
 
 [sub_resource type="Resource" id="Resource_rrrwc"]
 script = ExtResource("2_g1c57")
 Identifier = &"lumber"
 DisplayName = "Lumber Camp"
 Icon = ExtResource("2_rw13k")
-Cost = Array[Object]([SubResource("Resource_j4goh")])
-HarvestInfo = Array[Object]([SubResource("Resource_wm8rm")])
+Cost = [SubResource("Resource_j4goh")]
+HarvestInfo = [SubResource("Resource_wm8rm")]
 
 [sub_resource type="Resource" id="Resource_r6woy"]
 script = ExtResource("2_4c5j1")
@@ -44,15 +46,43 @@ script = ExtResource("3_n1tjh")
 HarvestType = 1
 HarvestRate = 1.0
 HarvestAmount = 2.5
+metadata/sId = &"research"
 
 [sub_resource type="Resource" id="Resource_asg2x"]
 script = ExtResource("2_g1c57")
 Identifier = &"research"
 DisplayName = "Research Camp"
 Icon = ExtResource("4_lor8m")
-Cost = Array[Object]([SubResource("Resource_r6woy"), SubResource("Resource_wwcxs")])
-HarvestInfo = Array[Object]([SubResource("Resource_5kdce")])
+Cost = [SubResource("Resource_r6woy"), SubResource("Resource_wwcxs")]
+HarvestInfo = [SubResource("Resource_5kdce")]
+
+[sub_resource type="Resource" id="Resource_6n7oe"]
+script = ExtResource("2_4c5j1")
+Type = 0
+Amount = 250
+PenaltyModifier = 1.0
+
+[sub_resource type="Resource" id="Resource_72e4k"]
+script = ExtResource("2_4c5j1")
+Type = 1
+Amount = 500
+PenaltyModifier = 1.0
+
+[sub_resource type="Resource" id="Resource_pheim"]
+script = ExtResource("3_n1tjh")
+HarvestType = 1
+HarvestRate = 12.0
+HarvestAmount = 5.0
+metadata/sId = &"observation"
+
+[sub_resource type="Resource" id="Resource_34kpt"]
+script = ExtResource("2_g1c57")
+Identifier = &"observation"
+DisplayName = "Observation Centre"
+Icon = ExtResource("7_0quyy")
+Cost = [SubResource("Resource_6n7oe"), SubResource("Resource_72e4k")]
+HarvestInfo = [SubResource("Resource_pheim")]
 
 [resource]
 script = ExtResource("1_ul2dr")
-structures = Array[Object]([SubResource("Resource_rrrwc"), SubResource("Resource_asg2x")])
+structures = [SubResource("Resource_rrrwc"), SubResource("Resource_asg2x"), SubResource("Resource_34kpt")]

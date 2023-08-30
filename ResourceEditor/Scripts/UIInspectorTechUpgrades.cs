@@ -9,6 +9,7 @@ public sealed partial class UIInspectorTechUpgrades : BaseInspectorView, IEditPa
     LineEdit fieldIdentifier;
     LineEdit fieldName;
     TextEdit fieldDescription;
+    UIStepperVec2 fieldPosition;
 
     UIImageWell iconView;
     UIIconBrowser iconBrowser;
@@ -31,6 +32,7 @@ public sealed partial class UIInspectorTechUpgrades : BaseInspectorView, IEditPa
         fieldIdentifier = GetNode<LineEdit>("%Identifier");
         fieldName = GetNode<LineEdit>("%Name");
         fieldDescription = GetNode<TextEdit>("%Description");
+        fieldPosition = GetNode<UIStepperVec2>("%Position");
 
         iconView = GetNode<UIImageWell>("%Icon");
         iconBrowser = GetNode<UIIconBrowser>("%IconBrowser");
@@ -42,8 +44,9 @@ public sealed partial class UIInspectorTechUpgrades : BaseInspectorView, IEditPa
 
         // Bind
         fieldIdentifier.TextSubmitted += OnIdentifierChanged;
-        fieldName.TextSubmitted += OnNameChanged;
         fieldDescription.TextChanged += OnDescriptionChanged;
+        fieldPosition.OnValueChanged += OnPositionUpdated;
+        fieldName.TextSubmitted += OnNameChanged;
 
         iconBrowser.PopupHide += OnIconSelectionAborted;
         iconBrowser.OnModalStarted += OnModalStarted;
@@ -81,6 +84,7 @@ public sealed partial class UIInspectorTechUpgrades : BaseInspectorView, IEditPa
         fieldName.Text = upgradeInfo.DisplayName;
         fieldDescription.Text = upgradeInfo.DisplayDescription;
 
+        fieldPosition.SetValue(upgradeInfo.Position, true);
         iconView.SetImage(upgradeInfo.Icon);
     }
 
@@ -112,14 +116,22 @@ public sealed partial class UIInspectorTechUpgrades : BaseInspectorView, IEditPa
         Finalise();
     }
 
+    void OnPositionUpdated(Vector2I value)
+    {
+        upgradeInfo.Position = value;
+        Finalise();
+    }
+
     void OnIdentifierChanged(string value)
     {
+        fieldIdentifier.ReleaseFocus();
         upgradeInfo.Id = value;
         Finalise();
     }
 
     void OnNameChanged(string value)
     {
+        fieldName.ReleaseFocus();
         upgradeInfo.DisplayName = value;
         Finalise();
     }
@@ -127,9 +139,7 @@ public sealed partial class UIInspectorTechUpgrades : BaseInspectorView, IEditPa
     void OnDescriptionChanged()
     {
         if (!descriptionDebounce.IsStopped())
-        {
             return;
-        }
 
         upgradeInfo.DisplayDescription = fieldDescription.Text;
         descriptionDebounce.Start(0.2f);
@@ -228,7 +238,7 @@ public sealed partial class UIInspectorTechUpgrades : BaseInspectorView, IEditPa
 
     public void DataProviderRequestContextWrite<[MustBeVariant] T>(UIEditParamsListView listView, int index, T data)
     {
-        if (data is string identifier)
+        if (data is StringName identifier)
         {
             mutablePrerequisites[index] = identifier;
         }

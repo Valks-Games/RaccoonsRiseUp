@@ -5,7 +5,6 @@ public sealed partial class UICellPrerequisiteId : BaseEditParamsCell
     [Export] EditorTechUpgradeDiscoverability discoverability;
 
     OptionButton fieldPrerequisiteId;
-    int lastIdx;
 
     public override void Initialise()
     {
@@ -28,10 +27,12 @@ public sealed partial class UICellPrerequisiteId : BaseEditParamsCell
 
     public void Sync(string identifier)
     {
-        int idx = IndexForText(identifier);
+        fieldPrerequisiteId.Text = identifier;
 
-        fieldPrerequisiteId.Select(idx);
-        lastIdx = idx;
+        Span<TechUpgradeInfo> upgrades = default;
+        discoverability.GetTechUpgradeIds(ref upgrades);
+
+        fieldPrerequisiteId.Select(FindTheAssociatedIndexForThisIdentifierInTheSourceDiscoverabilityArray(identifier, upgrades));
     }
 
     public override void UpdateSource()
@@ -39,20 +40,19 @@ public sealed partial class UICellPrerequisiteId : BaseEditParamsCell
         Span<TechUpgradeInfo> upgrades = default;
         discoverability.GetTechUpgradeIds(ref upgrades);
 
-        listView.EditorPerformWrite(GetIndex(), upgrades[lastIdx]);
+        listView.EditorPerformWrite(GetIndex(), upgrades[fieldPrerequisiteId.Selected].Id);
     }
 
-    int IndexForText(string value)
+    int FindTheAssociatedIndexForThisIdentifierInTheSourceDiscoverabilityArray(
+        StringName identifierToFindMatchesFor,
+        Span<TechUpgradeInfo> sourceUpgradesArray)
     {
-        Span<TechUpgradeInfo> upgrades = default;
-        discoverability.GetTechUpgradeIds(ref upgrades);
-
-        for (int i = 0; i < upgrades.Length; ++i)
+        for (int iterationStep = 0; iterationStep < sourceUpgradesArray.Length; ++iterationStep)
         {
-            if (upgrades[i].Id != value)
+            if (sourceUpgradesArray[iterationStep].Id != identifierToFindMatchesFor)
                 continue;
 
-            return i;
+            return iterationStep;
         }
 
         return 0;

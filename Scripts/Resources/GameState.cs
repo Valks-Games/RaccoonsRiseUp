@@ -121,6 +121,14 @@ public sealed partial class GameState : Resource
         return true;
     }
 
+    /// <summary>
+    /// (Must only be called from the Resource Editor)
+    /// </summary>
+    public void _SetJobData(JobData[] jobs)
+    {
+        jobData = jobs;
+    }
+
     /// Structures ///
 
     public int GetStructureCount(StringName id)

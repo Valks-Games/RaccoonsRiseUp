@@ -2,10 +2,11 @@ namespace RRU.ResourceEditor;
 
 public sealed partial class UIDataInspector : Control
 {
-    Control contentsView;
-
     [Export] PackedScene pkgStructureInspector;
     [Export] PackedScene pkgTechUpgradeInspector;
+    [Export] PackedScene pkgJobDataInspector;
+
+    Control contentsView;
 
     public override void _Ready()
     {
@@ -33,6 +34,10 @@ public sealed partial class UIDataInspector : Control
         else if (data is TechUpgradeInfo techUpgrade)
         {
             ConfigureInspector(pkgTechUpgradeInspector, techUpgrade, index, writer);
+        }
+        else if (data is JobData jobData)
+        {
+            ConfigureInspector(pkgJobDataInspector, jobData, index, writer);
         }
     }
 

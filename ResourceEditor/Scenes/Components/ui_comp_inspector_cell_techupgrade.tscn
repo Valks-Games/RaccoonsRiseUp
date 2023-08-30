@@ -1,19 +1,20 @@
-[gd_scene load_steps=8 format=3 uid="uid://berftd2k47q5j"]
+[gd_scene load_steps=9 format=3 uid="uid://berftd2k47q5j"]
 
-[ext_resource type="Script" path="res://ResourceEditor/Scripts/UIInspectorTechUpgrades.cs" id="1_6c4wy"]
-[ext_resource type="PackedScene" uid="uid://brdkkki7ijxiq" path="res://ResourceEditor/Scenes/Components/ui_comp_params_edit_list_view.tscn" id="2_vc4gn"]
-[ext_resource type="PackedScene" uid="uid://cq8o1d7md713a" path="res://ResourceEditor/Scenes/Components/ui_comp_cell_cost.tscn" id="3_hi3oy"]
-[ext_resource type="PackedScene" uid="uid://2sss825qy2ih" path="res://ResourceEditor/Scenes/Components/ui_comp_cell_prerequisite.tscn" id="3_rv4ga"]
-[ext_resource type="PackedScene" uid="uid://dcmog1pnmi162" path="res://ResourceEditor/Scenes/Components/ui_comp_cell_modifier.tscn" id="5_d10s3"]
-[ext_resource type="PackedScene" uid="uid://jkq5g8a1pwx4" path="res://ResourceEditor/Scenes/Components/ui_comp_image_well.tscn" id="6_r4sus"]
-[ext_resource type="PackedScene" uid="uid://c5j857c31bruy" path="res://ResourceEditor/Scenes/Components/ui_modal_icon_browser.tscn" id="7_0x6sl"]
+[ext_resource type="Script" path="res://ResourceEditor/Scripts/UIInspectorTechUpgrades.cs" id="1_v8lhg"]
+[ext_resource type="PackedScene" uid="uid://jkq5g8a1pwx4" path="res://ResourceEditor/Scenes/Components/ui_comp_image_well.tscn" id="2_k3itv"]
+[ext_resource type="PackedScene" uid="uid://darwvxc0alrap" path="res://ResourceEditor/Scenes/Components/ui_comp_vec2_stepper.tscn" id="3_c0j5t"]
+[ext_resource type="PackedScene" uid="uid://brdkkki7ijxiq" path="res://ResourceEditor/Scenes/Components/ui_comp_params_edit_list_view.tscn" id="4_12up2"]
+[ext_resource type="PackedScene" uid="uid://2sss825qy2ih" path="res://ResourceEditor/Scenes/Components/ui_comp_cell_prerequisite.tscn" id="5_sko2n"]
+[ext_resource type="PackedScene" uid="uid://cq8o1d7md713a" path="res://ResourceEditor/Scenes/Components/ui_comp_cell_cost.tscn" id="6_ucpjp"]
+[ext_resource type="PackedScene" uid="uid://dcmog1pnmi162" path="res://ResourceEditor/Scenes/Components/ui_comp_cell_modifier.tscn" id="7_03lf7"]
+[ext_resource type="PackedScene" uid="uid://c5j857c31bruy" path="res://ResourceEditor/Scenes/Components/ui_modal_icon_browser.tscn" id="8_nude2"]
 
 [node name="GridContainer" type="GridContainer"]
 offset_right = 442.0
 offset_bottom = 422.0
 theme_override_constants/v_separation = 15
 columns = 2
-script = ExtResource("1_6c4wy")
+script = ExtResource("1_v8lhg")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 2
@@ -41,10 +42,19 @@ placeholder_text = "e.g. Wood Upgrade"
 layout_mode = 2
 text = "Icon:"
 
-[node name="Icon" parent="." node_paths=PackedStringArray("iconBrowser") instance=ExtResource("6_r4sus")]
+[node name="Icon" parent="." node_paths=PackedStringArray("iconBrowser") instance=ExtResource("2_k3itv")]
 unique_name_in_owner = true
 layout_mode = 2
 iconBrowser = NodePath("../IconBrowser")
+
+[node name="Label8" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Position"
+
+[node name="Position" parent="." instance=ExtResource("3_c0j5t")]
+unique_name_in_owner = true
+layout_mode = 2
 
 [node name="Label7" type="Label" parent="."]
 layout_mode = 2
@@ -57,19 +67,25 @@ custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
 placeholder_text = "e.g. Increases wood production by a bit."
 
+[node name="HSeparator" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="HSeparator2" type="HSeparator" parent="."]
+layout_mode = 2
+
 [node name="Label4" type="Label" parent="."]
 layout_mode = 2
 size_flags_vertical = 0
 text = "Prerequisites:"
 
-[node name="Prerequisites" parent="." node_paths=PackedStringArray("template") instance=ExtResource("2_vc4gn")]
+[node name="Prerequisites" parent="." node_paths=PackedStringArray("template") instance=ExtResource("4_12up2")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 90)
 layout_mode = 2
 size_flags_horizontal = 3
 template = NodePath("ContentView/PrerequisiteCell")
 
-[node name="PrerequisiteCell" parent="Prerequisites/ContentView" index="0" instance=ExtResource("3_rv4ga")]
+[node name="PrerequisiteCell" parent="Prerequisites/ContentView" index="0" instance=ExtResource("5_sko2n")]
 layout_mode = 2
 
 [node name="Label6" type="Label" parent="."]
@@ -77,14 +93,14 @@ layout_mode = 2
 size_flags_vertical = 0
 text = "Cost:"
 
-[node name="Cost" parent="." node_paths=PackedStringArray("template") instance=ExtResource("2_vc4gn")]
+[node name="Cost" parent="." node_paths=PackedStringArray("template") instance=ExtResource("4_12up2")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 90)
 layout_mode = 2
 size_flags_horizontal = 3
 template = NodePath("ContentView/CostCell")
 
-[node name="CostCell" parent="Cost/ContentView" index="0" instance=ExtResource("3_hi3oy")]
+[node name="CostCell" parent="Cost/ContentView" index="0" instance=ExtResource("6_ucpjp")]
 layout_mode = 2
 
 [node name="Label5" type="Label" parent="."]
@@ -92,17 +108,17 @@ layout_mode = 2
 size_flags_vertical = 0
 text = "Modifiers:"
 
-[node name="Modifiers" parent="." node_paths=PackedStringArray("template") instance=ExtResource("2_vc4gn")]
+[node name="Modifiers" parent="." node_paths=PackedStringArray("template") instance=ExtResource("4_12up2")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 90)
 layout_mode = 2
 size_flags_horizontal = 3
 template = NodePath("ContentView/ModifierCell")
 
-[node name="ModifierCell" parent="Modifiers/ContentView" index="0" instance=ExtResource("5_d10s3")]
+[node name="ModifierCell" parent="Modifiers/ContentView" index="0" instance=ExtResource("7_03lf7")]
 layout_mode = 2
 
-[node name="IconBrowser" parent="." instance=ExtResource("7_0x6sl")]
+[node name="IconBrowser" parent="." instance=ExtResource("8_nude2")]
 unique_name_in_owner = true
 
 [editable path="Prerequisites"]
