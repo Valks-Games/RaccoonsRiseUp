@@ -1,0 +1,55 @@
+[gd_scene load_steps=4 format=3 uid="uid://cq8o1d7md713a"]
+
+[ext_resource type="Script" path="res://ResourceEditor/Scripts/UICellCost.cs" id="1_ujy4c"]
+[ext_resource type="Resource" uid="uid://cju7250tyfid5" path="res://Resources/res_shared_game_state.tres" id="2_t1amo"]
+[ext_resource type="PackedScene" uid="uid://drc1awb0pn3u2" path="res://ResourceEditor/Scenes/Components/ui_comp_stepper.tscn" id="3_gvmo4"]
+
+[node name="CostCell" type="HBoxContainer"]
+offset_right = 366.0
+offset_bottom = 66.0
+theme_override_constants/separation = 5
+script = ExtResource("1_ujy4c")
+gameState = ExtResource("2_t1amo")
+
+[node name="Delete" type="Button" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(33, 4)
+layout_mode = 2
+size_flags_vertical = 4
+text = "X"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="ResourceType" type="OptionButton" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "x"
+
+[node name="Count" parent="VBoxContainer/HBoxContainer" instance=ExtResource("3_gvmo4")]
+unique_name_in_owner = true
+layout_mode = 2
+MinValue = 1.0
+MaxValue = 1000.0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Penalty Modifier: "
+
+[node name="Penalty" parent="VBoxContainer/HBoxContainer2" instance=ExtResource("3_gvmo4")]
+unique_name_in_owner = true
+layout_mode = 2
+MaxValue = 1.0
+StepSize = 0.01

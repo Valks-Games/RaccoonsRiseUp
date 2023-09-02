@@ -1,9 +1,14 @@
-[gd_resource type="Resource" script_class="TechDataService" load_steps=49 format=3 uid="uid://bq25wiv36tld1"]
+[gd_resource type="Resource" script_class="TechDataService" load_steps=54 format=3]
 
+[ext_resource type="Texture2D" path="res://Sprites/Icons/stone-axe.svg" id="1_2vm8l"]
+[ext_resource type="Texture2D" path="res://Sprites/Icons/wood-beam.svg" id="1_6gj1b"]
 [ext_resource type="Script" path="res://Scripts/Resources/ResourceModifierDefinition.cs" id="1_6lwrk"]
 [ext_resource type="Script" path="res://Scripts/Resources/ResourceRequirement.cs" id="1_aoil5"]
 [ext_resource type="Script" path="res://Scripts/Resources/TechDataService.cs" id="1_w3jw2"]
 [ext_resource type="Script" path="res://Scripts/Resources/TechUpgradeInfo.cs" id="1_y3fwg"]
+[ext_resource type="Texture2D" path="res://Sprites/Icons/wood-axe.svg" id="6_ga42h"]
+[ext_resource type="Texture2D" path="res://Sprites/Icons/double-ringed-orb.svg" id="7_iv48c"]
+[ext_resource type="Texture2D" path="res://Sprites/Icons/circular-saw.svg" id="8_fysn6"]
 
 [sub_resource type="Resource" id="Resource_mk6gd"]
 script = ExtResource("1_6lwrk")
@@ -22,10 +27,11 @@ script = ExtResource("1_y3fwg")
 Id = &"wood1"
 RequiredUpgradeIds = PackedStringArray()
 DisplayName = "Basic Axes"
-UpgradeType = 0
+Icon = ExtResource("1_2vm8l")
+DisplayDescription = "Primitive tools for cutting wood. Slightly increases lumbering output."
 Position = Vector2i(0, 0)
-UpgradeCost = Array[Object]([SubResource("Resource_x7xig")])
-Modifiers = Array[Object]([SubResource("Resource_mk6gd")])
+UpgradeCost = [SubResource("Resource_x7xig")]
+Modifiers = [SubResource("Resource_mk6gd")]
 
 [sub_resource type="Resource" id="Resource_2gmru"]
 script = ExtResource("1_6lwrk")
@@ -50,10 +56,11 @@ script = ExtResource("1_y3fwg")
 Id = &"wood2"
 RequiredUpgradeIds = PackedStringArray("wood1")
 DisplayName = "Stone Axes"
-UpgradeType = 0
+Icon = ExtResource("1_2vm8l")
+DisplayDescription = "Improved lumbering tools made with a sturdier base. Slightly increases wood cutting output."
 Position = Vector2i(1, 0)
-UpgradeCost = Array[Object]([SubResource("Resource_810ry"), SubResource("Resource_3buv2")])
-Modifiers = Array[Object]([SubResource("Resource_2gmru")])
+UpgradeCost = [SubResource("Resource_810ry"), SubResource("Resource_3buv2")]
+Modifiers = [SubResource("Resource_2gmru")]
 
 [sub_resource type="Resource" id="Resource_3juqv"]
 script = ExtResource("1_6lwrk")
@@ -78,10 +85,11 @@ script = ExtResource("1_y3fwg")
 Id = &"wood3"
 RequiredUpgradeIds = PackedStringArray("wood2")
 DisplayName = "Iron Axes"
-UpgradeType = 0
+Icon = ExtResource("1_2vm8l")
+DisplayDescription = "Greatly improved woodcutting tools. Fortified with an even sturdier base, coupled with its mean iron edge makes it a perfect tool for prolonged lumbering operations."
 Position = Vector2i(2, 0)
-UpgradeCost = Array[Object]([SubResource("Resource_nprqu"), SubResource("Resource_gago4")])
-Modifiers = Array[Object]([SubResource("Resource_3juqv")])
+UpgradeCost = [SubResource("Resource_nprqu"), SubResource("Resource_gago4")]
+Modifiers = [SubResource("Resource_3juqv")]
 
 [sub_resource type="Resource" id="Resource_bnqad"]
 script = ExtResource("1_6lwrk")
@@ -106,10 +114,11 @@ script = ExtResource("1_y3fwg")
 Id = &"wood4"
 RequiredUpgradeIds = PackedStringArray("wood3")
 DisplayName = "Steel Axes"
-UpgradeType = 0
+Icon = ExtResource("1_2vm8l")
+DisplayDescription = "The next evolution of the Iron Axes. With an improved steel blade as its edge, it increases lumbering output by an even greater amount."
 Position = Vector2i(3, 0)
-UpgradeCost = Array[Object]([SubResource("Resource_p780c"), SubResource("Resource_mwbjb")])
-Modifiers = Array[Object]([SubResource("Resource_bnqad")])
+UpgradeCost = [SubResource("Resource_p780c"), SubResource("Resource_mwbjb")]
+Modifiers = [SubResource("Resource_bnqad")]
 
 [sub_resource type="Resource" id="Resource_6kaij"]
 script = ExtResource("1_6lwrk")
@@ -134,10 +143,11 @@ script = ExtResource("1_y3fwg")
 Id = &"fwood1"
 RequiredUpgradeIds = PackedStringArray("wood3")
 DisplayName = "Wood Studies"
-UpgradeType = 0
+Icon = ExtResource("1_6gj1b")
+DisplayDescription = "Through careful observation, woodcutters gain better insight over the trees they harvest. This newfound efficiency allows them to get additional materials from the parts they bring back."
 Position = Vector2i(3, -1)
-UpgradeCost = Array[Object]([SubResource("Resource_q3yg8"), SubResource("Resource_xn73c")])
-Modifiers = Array[Object]([SubResource("Resource_6kaij")])
+UpgradeCost = [SubResource("Resource_q3yg8"), SubResource("Resource_xn73c")]
+Modifiers = [SubResource("Resource_6kaij")]
 
 [sub_resource type="Resource" id="Resource_melrr"]
 script = ExtResource("1_6lwrk")
@@ -168,10 +178,11 @@ script = ExtResource("1_y3fwg")
 Id = &"fwood2"
 RequiredUpgradeIds = PackedStringArray("fwood1")
 DisplayName = "Adv. Wood Studies"
-UpgradeType = 0
+Icon = ExtResource("1_6gj1b")
+DisplayDescription = "By formalising their intuitive understanding into a written medium, the knowledge of this expertise becomes more accessible for future improvements."
 Position = Vector2i(4, -1)
-UpgradeCost = Array[Object]([SubResource("Resource_fyiqt"), SubResource("Resource_6g8fb")])
-Modifiers = Array[Object]([SubResource("Resource_melrr"), SubResource("Resource_fxlht")])
+UpgradeCost = [SubResource("Resource_fyiqt"), SubResource("Resource_6g8fb")]
+Modifiers = [SubResource("Resource_melrr"), SubResource("Resource_fxlht")]
 
 [sub_resource type="Resource" id="Resource_uqpe8"]
 script = ExtResource("1_6lwrk")
@@ -202,10 +213,11 @@ script = ExtResource("1_y3fwg")
 Id = &"xwood"
 RequiredUpgradeIds = PackedStringArray("fwood2", "wood4")
 DisplayName = "Art of Woodcutting"
-UpgradeType = 0
+Icon = ExtResource("6_ga42h")
+DisplayDescription = "The final advancement necessary to achieve the 'Art of Woodcutting'. Combining everything they've learned so far, along with their new and improved woodcutting tools, lumbering has never been more efficient!"
 Position = Vector2i(5, 0)
-UpgradeCost = Array[Object]([SubResource("Resource_gtnpn"), SubResource("Resource_f3quf")])
-Modifiers = Array[Object]([SubResource("Resource_uqpe8"), SubResource("Resource_k04tk")])
+UpgradeCost = [SubResource("Resource_gtnpn"), SubResource("Resource_f3quf")]
+Modifiers = [SubResource("Resource_uqpe8"), SubResource("Resource_k04tk")]
 
 [sub_resource type="Resource" id="Resource_ci8lc"]
 script = ExtResource("1_6lwrk")
@@ -224,10 +236,11 @@ script = ExtResource("1_y3fwg")
 Id = &"tech1"
 RequiredUpgradeIds = PackedStringArray()
 DisplayName = "Focus"
-UpgradeType = 1
+Icon = ExtResource("7_iv48c")
+DisplayDescription = "Through some kind of bizarre universal intervention, researchers tend to lose focus less often. Increases research efficiency by a bit."
 Position = Vector2i(0, 2)
-UpgradeCost = Array[Object]([SubResource("Resource_f6sid")])
-Modifiers = Array[Object]([SubResource("Resource_ci8lc")])
+UpgradeCost = [SubResource("Resource_f6sid")]
+Modifiers = [SubResource("Resource_ci8lc")]
 
 [sub_resource type="Resource" id="Resource_yq2q1"]
 script = ExtResource("1_6lwrk")
@@ -246,10 +259,11 @@ script = ExtResource("1_y3fwg")
 Id = &"tech2"
 RequiredUpgradeIds = PackedStringArray("tech1")
 DisplayName = "Super Focus"
-UpgradeType = 1
+Icon = ExtResource("7_iv48c")
+DisplayDescription = "By channeling all their mental energy into the task at hand, researchers get to process new information a lot more efficiently. Increases research output even more."
 Position = Vector2i(1, 2)
-UpgradeCost = Array[Object]([SubResource("Resource_0yqe0")])
-Modifiers = Array[Object]([SubResource("Resource_yq2q1")])
+UpgradeCost = [SubResource("Resource_0yqe0")]
+Modifiers = [SubResource("Resource_yq2q1")]
 
 [sub_resource type="Resource" id="Resource_ppfwp"]
 script = ExtResource("1_6lwrk")
@@ -268,10 +282,11 @@ script = ExtResource("1_y3fwg")
 Id = &"tech3"
 RequiredUpgradeIds = PackedStringArray("tech2")
 DisplayName = "Ascended Focus"
-UpgradeType = 1
+Icon = ExtResource("7_iv48c")
+DisplayDescription = "With an even greater focus on... focus put in into place, researchers will now often get out-of-body-experiences when they go to sleep. This enables them to not only do research in their sleep, but to also literally imprint new knowledge into the spirit itself, achieving true enlightenment."
 Position = Vector2i(2, 2)
-UpgradeCost = Array[Object]([SubResource("Resource_3o8gq")])
-Modifiers = Array[Object]([SubResource("Resource_ppfwp")])
+UpgradeCost = [SubResource("Resource_3o8gq")]
+Modifiers = [SubResource("Resource_ppfwp")]
 
 [sub_resource type="Resource" id="Resource_qx51f"]
 script = ExtResource("1_6lwrk")
@@ -290,10 +305,11 @@ script = ExtResource("1_y3fwg")
 Id = &"debug1"
 RequiredUpgradeIds = PackedStringArray()
 DisplayName = "(Debug) x50% Wood"
-UpgradeType = 0
+Icon = ExtResource("8_fysn6")
+DisplayDescription = "This is not supposed to be here..."
 Position = Vector2i(-2, 0)
-UpgradeCost = Array[Object]([SubResource("Resource_5m0fb")])
-Modifiers = Array[Object]([SubResource("Resource_qx51f")])
+UpgradeCost = [SubResource("Resource_5m0fb")]
+Modifiers = [SubResource("Resource_qx51f")]
 
 [sub_resource type="Resource" id="Resource_on4yk"]
 script = ExtResource("1_6lwrk")
@@ -312,11 +328,12 @@ script = ExtResource("1_y3fwg")
 Id = &"debug2"
 RequiredUpgradeIds = PackedStringArray()
 DisplayName = "Debug (50%) Tech"
-UpgradeType = 1
+Icon = ExtResource("8_fysn6")
+DisplayDescription = "This is not supposed to be here..."
 Position = Vector2i(-2, -2)
-UpgradeCost = Array[Object]([SubResource("Resource_emcwn")])
-Modifiers = Array[Object]([SubResource("Resource_on4yk")])
+UpgradeCost = [SubResource("Resource_emcwn")]
+Modifiers = [SubResource("Resource_on4yk")]
 
 [resource]
 script = ExtResource("1_w3jw2")
-_upgrades = Array[Object]([SubResource("Resource_b43ew"), SubResource("Resource_l4qjo"), SubResource("Resource_svdyu"), SubResource("Resource_novj8"), SubResource("Resource_rlxob"), SubResource("Resource_g3snp"), SubResource("Resource_bgimb"), SubResource("Resource_mobq8"), SubResource("Resource_84v33"), SubResource("Resource_ofqm7"), SubResource("Resource_5h7gd"), SubResource("Resource_duq5e")])
+_upgrades = [SubResource("Resource_b43ew"), SubResource("Resource_l4qjo"), SubResource("Resource_svdyu"), SubResource("Resource_novj8"), SubResource("Resource_rlxob"), SubResource("Resource_g3snp"), SubResource("Resource_bgimb"), SubResource("Resource_mobq8"), SubResource("Resource_84v33"), SubResource("Resource_ofqm7"), SubResource("Resource_5h7gd"), SubResource("Resource_duq5e")]

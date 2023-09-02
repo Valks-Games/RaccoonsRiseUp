@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="EditorTechUpgradeDiscoverability" load_steps=2 format=3 uid="uid://dfpt2hkj0vka8"]
+
+[ext_resource type="Script" path="res://ResourceEditor/Scripts/EditorTechUpgradeDiscoverability.cs" id="1_md0mo"]
+
+[resource]
+script = ExtResource("1_md0mo")

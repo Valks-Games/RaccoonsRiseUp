@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://2sss825qy2ih"]
+
+[ext_resource type="Script" path="res://ResourceEditor/Scripts/UICellPrerequisiteId.cs" id="1_tbpsw"]
+[ext_resource type="Resource" uid="uid://dfpt2hkj0vka8" path="res://ResourceEditor/Resources/editor_upgrades_discoverability.tres" id="2_rjtgp"]
+
+[node name="PrerequisiteCell" type="HBoxContainer"]
+offset_right = 266.0
+offset_bottom = 31.0
+theme_override_constants/separation = 5
+script = ExtResource("1_tbpsw")
+discoverability = ExtResource("2_rjtgp")
+
+[node name="Delete" type="Button" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(33, 4)
+layout_mode = 2
+text = "X"
+
+[node name="Id" type="OptionButton" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3

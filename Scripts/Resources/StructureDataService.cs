@@ -12,4 +12,12 @@ public sealed partial class StructureDataService : Resource
     {
         structures = this.structures;
     }
+
+    /// <summary>
+    /// (Must only be called by the Resource Editor.)
+    /// </summary>
+    public void _SetStructures(StructureDataInfo[] structures)
+    {
+        this.structures = structures;
+    }
 }

@@ -26,7 +26,7 @@ public sealed partial class TechNodeDetails : Control
     Label prerequisiteLabel;
     Control requirementsView;
 
-    TechInfo info;
+    TechUpgradeInfo info;
     bool wasVisible;
 
     public override void _Ready()
@@ -63,6 +63,36 @@ public sealed partial class TechNodeDetails : Control
         gameState.ResourcesChanged -= OnResourcesChanged;
     }
 
+    /// Public Methods ///
+
+    public void SetUpgradeInfo(TechUpgradeInfo info)
+    {
+        if (info == null)
+        {
+            OnHideRequested();
+            return;
+        }
+
+        this.info = info;
+
+        SetVisibility(true);
+
+        labelType.Text = info.DisplayName;
+
+        labelDescription.Text = info.DisplayDescription;
+        icon.Texture = info.Icon;
+
+        SetResearchState(dataService.IsResearched(info.Id));
+        UpdateDetails();
+    }
+
+    /// Events ///
+
+    public void OnHideRequested()
+    {
+        SetVisibility(false);
+    }
+
     public void OnResourcesChanged(ResourceDict _)
     {
         if (info == null)
@@ -70,6 +100,14 @@ public sealed partial class TechNodeDetails : Control
 
         // Periodically check for material requirements;
         UpdateResearchButtonState(dataService.IsResearched(info.Id));
+    }
+
+    void OnResearchPressed()
+    {
+        gameState.ConsumeUpgradeMaterials(dataService.GetInfoForId(info.Id));
+
+        dataService.Research(info.Id);
+        SetResearchState(true);
     }
 
     /// Helpers ///
@@ -241,44 +279,5 @@ public sealed partial class TechNodeDetails : Control
             finalVal: visible ? Colors.White : Colors.Transparent,
             duration: visible ? 0.8f : 0.15f
         );
-    }
-
-    /// Signal Handlers ///
-
-    public void OnShowDetailRequested(TechNodeClickedInfo info)
-    {
-        if (info == null)
-        {
-            OnHideRequested();
-            return;
-        }
-
-        TechUpgradeInfo upgradeInfo =
-            dataService.GetInfoForId(id: info.TechInfo.Id);
-
-        this.info = info.TechInfo;
-
-        SetVisibility(true);
-
-        labelType.Text = upgradeInfo.DisplayName;
-
-        labelDescription.Text = info.TechInfo.Data.Description;
-        icon.Texture = info.TechInfo.Data.GetImage();
-
-        SetResearchState(dataService.IsResearched(info.TechInfo.Id));
-        UpdateDetails();
-    }
-
-    public void OnHideRequested()
-    {
-        SetVisibility(false);
-    }
-
-    void OnResearchPressed()
-    {
-        gameState.ConsumeUpgradeMaterials(dataService.GetInfoForId(info.Id));
-
-        dataService.Research(info.Id);
-        SetResearchState(true);
     }
 }

@@ -1,26 +1,26 @@
-[gd_resource type="Resource" script_class="GameState" load_steps=7 format=3 uid="uid://7lt0byaqcwg6"]
+[gd_resource type="Resource" script_class="GameState" load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://Scripts/Data/JobData.cs" id="1_mrkj6"]
 [ext_resource type="Script" path="res://Scripts/Resources/GameState.cs" id="1_ygkal"]
-[ext_resource type="Resource" uid="uid://bq25wiv36tld1" path="res://Resources/res_shared_tech_data_service.tres" id="2_8yx5x"]
-[ext_resource type="Resource" uid="uid://bl06cl5gsg4os" path="res://Resources/res_shared_structure_data_service.tres" id="3_730no"]
+[ext_resource type="Resource" path="res://Resources/res_shared_tech_data_service.tres" id="2_8yx5x"]
+[ext_resource type="Resource" path="res://Resources/res_shared_structure_data_service.tres" id="3_730no"]
 
-[sub_resource type="Resource" id="Resource_km8yq"]
+[sub_resource type="Resource" id="Resource_ul51w"]
 script = ExtResource("1_mrkj6")
 Job = 0
 ResourceType = 0
-gatherRate = 2.5
-gatherAmount = 0.1
+GatherRate = 5.0
+GatherAmount = 1.0
 
-[sub_resource type="Resource" id="Resource_45r54"]
+[sub_resource type="Resource" id="Resource_g02h5"]
 script = ExtResource("1_mrkj6")
 Job = 1
 ResourceType = 1
-gatherRate = 1.25
-gatherAmount = 0.1
+GatherRate = 3.0
+GatherAmount = 1.0
 
 [resource]
 script = ExtResource("1_ygkal")
-JobData = Array[Object]([SubResource("Resource_km8yq"), SubResource("Resource_45r54")])
+jobData = [SubResource("Resource_ul51w"), SubResource("Resource_g02h5")]
 techDataService = ExtResource("2_8yx5x")
 structureDataService = ExtResource("3_730no")

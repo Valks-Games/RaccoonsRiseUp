@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3 uid="uid://brdkkki7ijxiq"]
+
+[ext_resource type="Script" path="res://ResourceEditor/Scripts/UIEditParamsListView.cs" id="1_hmsl0"]
+
+[node name="ParamsEditView" type="VBoxContainer"]
+offset_right = 280.0
+offset_bottom = 336.0
+size_flags_vertical = 3
+script = ExtResource("1_hmsl0")
+
+[node name="ContentView" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+alignment = 2
+
+[node name="Add" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(33, 38)
+layout_mode = 2
+text = "+"

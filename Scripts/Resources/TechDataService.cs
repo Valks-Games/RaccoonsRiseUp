@@ -16,6 +16,14 @@ public sealed partial class TechDataService : Resource
         researchedUpgrades = new();
     }
 
+    /// <summary>
+    /// (Must only be called by the Resource Editor.)
+    /// </summary>
+    public void _SetUpgrades(TechUpgradeInfo[] upgrades)
+    {
+        _upgrades = upgrades;
+    }
+
     /// Upgrades ///
 
     public void Research(StringName id)

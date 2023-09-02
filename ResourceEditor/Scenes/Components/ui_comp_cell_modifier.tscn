@@ -1,0 +1,51 @@
+[gd_scene load_steps=4 format=3 uid="uid://dcmog1pnmi162"]
+
+[ext_resource type="Script" path="res://ResourceEditor/Scripts/UICellModifier.cs" id="1_8wecc"]
+[ext_resource type="PackedScene" uid="uid://drc1awb0pn3u2" path="res://ResourceEditor/Scenes/Components/ui_comp_stepper.tscn" id="1_lv7wm"]
+[ext_resource type="Resource" uid="uid://cju7250tyfid5" path="res://Resources/res_shared_game_state.tres" id="2_aidq8"]
+
+[node name="HBoxContainer" type="HBoxContainer"]
+offset_right = 347.0
+offset_bottom = 68.0
+theme_override_constants/separation = 5
+script = ExtResource("1_8wecc")
+gameState = ExtResource("2_aidq8")
+
+[node name="Button" type="Button" parent="."]
+custom_minimum_size = Vector2(33, 0)
+layout_mode = 2
+size_flags_vertical = 4
+text = "X"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(33, 4)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Target:"
+
+[node name="Target" type="OptionButton" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="ModType" type="OptionButton" parent="VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ModAmount" parent="VBoxContainer/HBoxContainer2" instance=ExtResource("1_lv7wm")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_horizontal = 3
+PrefixString = "Mod:"

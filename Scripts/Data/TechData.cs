@@ -1,26 +1,6 @@
 ﻿namespace RRU;
 
-public partial class Game
-{
-    public static Dictionary<TechType, TechData> TechData { get; } = new()
-    {
-        {
-            TechType.WoodEffeciency, new TechData
-            {
-                ImagePath = "wood-beam",
-                Description = "Increase wood production"
-            }
-        },
-        {
-            TechType.ResearchEffeciency, new TechData
-            {
-                ImagePath = "archive-research",
-                Description = "Increase research production"
-            }
-        }
-    };
-}
-
+[Obsolete]
 public class TechData
 {
     public string ImagePath { get; set; }
@@ -30,6 +10,7 @@ public class TechData
         ResourceLoader.Load<Texture2D>($"res://Sprites/Icons/{ImagePath}.svg");
 }
 
+[Obsolete]
 public enum TechType
 {
     WoodEffeciency,

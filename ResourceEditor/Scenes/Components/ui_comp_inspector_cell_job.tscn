@@ -1,0 +1,60 @@
+[gd_scene load_steps=4 format=3 uid="uid://di322al6hbygw"]
+
+[ext_resource type="Script" path="res://ResourceEditor/Scripts/UIInspectorJobData.cs" id="1_anptm"]
+[ext_resource type="Resource" uid="uid://7lt0byaqcwg6" path="res://Resources/res_shared_game_state.tres" id="2_221q3"]
+[ext_resource type="PackedScene" uid="uid://drc1awb0pn3u2" path="res://ResourceEditor/Scenes/Components/ui_comp_stepper.tscn" id="3_62wu8"]
+
+[node name="GridContainer" type="GridContainer"]
+offset_right = 301.0
+offset_bottom = 269.0
+theme_override_constants/v_separation = 15
+columns = 2
+script = ExtResource("1_anptm")
+gameState = ExtResource("2_221q3")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "Job:"
+
+[node name="Job" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "JobType"
+
+[node name="HSeparator" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="HSeparator2" type="HSeparator" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label3" type="Label" parent="."]
+layout_mode = 2
+text = "Target Resource:"
+
+[node name="Resource" type="OptionButton" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="."]
+layout_mode = 2
+text = "Gather Rate:"
+
+[node name="Rate" parent="." instance=ExtResource("3_62wu8")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+MinValue = 0.01
+StepSize = 0.1
+
+[node name="Label5" type="Label" parent="."]
+layout_mode = 2
+text = "Gather Amount:"
+
+[node name="Amount" parent="." instance=ExtResource("3_62wu8")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+MinValue = 1.0
+MaxValue = 9.22337e+18

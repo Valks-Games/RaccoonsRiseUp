@@ -91,6 +91,9 @@ public sealed partial class GameState : Resource
     public void GetJobTypes(ref ReadOnlySpan<JobType> types) =>
         types = jobTypes;
 
+    public void GetJobData(ref ReadOnlySpan<JobData> data) =>
+        data = jobData;
+
     public bool AddJob(JobType job)
     {
         if (Raccoons <= 0)
@@ -116,6 +119,14 @@ public sealed partial class GameState : Resource
 
         UpdateJobs();
         return true;
+    }
+
+    /// <summary>
+    /// (Must only be called from the Resource Editor)
+    /// </summary>
+    public void _SetJobData(JobData[] jobs)
+    {
+        jobData = jobs;
     }
 
     /// Structures ///
