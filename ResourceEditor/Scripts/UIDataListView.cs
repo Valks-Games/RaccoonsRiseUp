@@ -13,7 +13,7 @@ public sealed partial class UIDataListView : Control
 
     int lastSelectedIdx = -1;
 
-    public async override void _Ready()
+    public override void _Ready()
     {
         // Get
         labelTitle = GetNode<Label>("%Title");

@@ -26,12 +26,18 @@ public sealed partial class UIStepperControl : Control
         SetValue(MinValue, true);
 
         // Bind
+        numberField.FocusExited += OnFocusLost;
         numberField.TextSubmitted += OnNumberChangedRequest;
         btnIncrement.Pressed += OnIncrementPressed;
         btnDecrement.Pressed += OnDecrementPressed;
     }
 
     /// Events ///
+
+    void OnFocusLost()
+    {
+        OnNumberChangedRequest(numberField.Text);
+    }
 
     void OnIncrementPressed()
     {

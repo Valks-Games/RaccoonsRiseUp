@@ -124,9 +124,10 @@ public sealed partial class UIInspectorTechUpgrades : BaseInspectorView, IEditPa
 
     void OnIdentifierChanged(string value)
     {
-        fieldIdentifier.ReleaseFocus();
         upgradeInfo.Id = value;
         Finalise();
+
+        fieldName.GrabFocus();
     }
 
     void OnNameChanged(string value)
@@ -177,7 +178,7 @@ public sealed partial class UIInspectorTechUpgrades : BaseInspectorView, IEditPa
         if (listView == prerequisitesListView)
         {
             UICellPrerequisiteId prerequisiteCell = (UICellPrerequisiteId) cell;
-            prerequisiteCell.Sync(mutablePrerequisites[index]);
+            prerequisiteCell.Sync(upgradeInfo.Id, mutablePrerequisites[index]);
         }
         else if (listView == costListView)
         {

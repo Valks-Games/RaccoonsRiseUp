@@ -73,7 +73,6 @@ layout_mode = 2
 
 [node name="IconBrowser" parent="." instance=ExtResource("5_3ebeu")]
 unique_name_in_owner = true
-visible = false
 
 [editable path="CostList"]
 [editable path="HarvestList"]

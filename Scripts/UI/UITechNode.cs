@@ -1,17 +1,11 @@
 namespace RRU;
 
-public class TechNodeClickedInfo
-{
-    public Vector2 Position { get; set; }
-    public TechInfo TechInfo { get; set; }
-}
-
 public partial class UITechNode : Control
 {
     static Color RESEARCHED_COLOUR => new(0.3f, 1.0f, 0.3f, 0.5f);
     static Color LOCKED_COLOUR => new(1.0f, 0.3f, 0.3f, 0.35f);
 
-    public event Action<TechNodeClickedInfo> ClickedOnNode;
+    public event Action<TechUpgradeInfo> OnClicked;
 
     const int DESCRIPTION_FONT_SIZE = 32;
     const int DESCRIPTION_OFFSET = 125;
@@ -21,7 +15,7 @@ public partial class UITechNode : Control
     TextureRect textureRect;
     TechNodeState nodeState;
     GTween tweenScale;
-    TechInfo info;
+    TechUpgradeInfo info;
 
     public override void _Ready()
     {
@@ -34,10 +28,10 @@ public partial class UITechNode : Control
         GuiInput += OnGuiInput;
     }
 
-    public void Setup(TechInfo info)
+    public void Setup(TechUpgradeInfo info)
     {
         this.info = info;
-        textureRect.Texture = info.Data.GetImage();
+        textureRect.Texture = info.Icon;
     }
 
     public void SetResearchState(TechNodeState state)
@@ -135,11 +129,7 @@ public partial class UITechNode : Control
             duration: 0.2
         );
 
-        ClickedOnNode?.Invoke(new TechNodeClickedInfo
-        {
-            Position = Position + Size / 2,
-            TechInfo = info
-        });
+        OnClicked?.Invoke(info);
 
         GetViewport().SetInputAsHandled();
     }

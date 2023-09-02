@@ -41,6 +41,17 @@ public sealed partial class UIDataInspector : Control
         }
     }
 
+    public void Finalise()
+    {
+        for (int i = contentsView.GetChildCount(); i --> 0;)
+        {
+            if (contentsView.GetChild(i) is not BaseInspectorView inspector)
+                continue;
+
+            inspector.Finalise();
+        }
+    }
+
     void ConfigureInspector(PackedScene template, Resource data, int index, IEditorContextWriter writer)
     {
         BaseInspectorView inspector = template.Instantiate<BaseInspectorView>();

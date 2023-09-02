@@ -12,27 +12,30 @@ public sealed partial class UICellPrerequisiteId : BaseEditParamsCell
         fieldPrerequisiteId = GetNode<OptionButton>("%Id");
         fieldPrerequisiteId.Clear();
 
-        // Init
+        // Bind
+        fieldPrerequisiteId.ItemSelected += OnPrerequisiteChanged;
+    }
+
+    public void Sync(StringName ownerId, StringName identifier)
+    {
+        fieldPrerequisiteId.Text = identifier;
+
+        // Populate ID selection
         Span<TechUpgradeInfo> upgrades = default;
         discoverability.GetTechUpgradeIds(ref upgrades);
 
         for (int i = 0; i < upgrades.Length; ++i)
         {
+            if (upgrades[i].Id == ownerId)
+                continue;
+
             fieldPrerequisiteId.AddItem(upgrades[i].Id);
+
+            if (upgrades[i].Id != identifier)
+                continue;
+
+            fieldPrerequisiteId.Select(i);
         }
-
-        // Bind
-        fieldPrerequisiteId.ItemSelected += OnPrerequisiteChanged;
-    }
-
-    public void Sync(string identifier)
-    {
-        fieldPrerequisiteId.Text = identifier;
-
-        Span<TechUpgradeInfo> upgrades = default;
-        discoverability.GetTechUpgradeIds(ref upgrades);
-
-        fieldPrerequisiteId.Select(FindTheAssociatedIndexForThisIdentifierInTheSourceDiscoverabilityArray(identifier, upgrades));
     }
 
     public override void UpdateSource()
@@ -41,21 +44,6 @@ public sealed partial class UICellPrerequisiteId : BaseEditParamsCell
         discoverability.GetTechUpgradeIds(ref upgrades);
 
         listView.EditorPerformWrite(GetIndex(), upgrades[fieldPrerequisiteId.Selected].Id);
-    }
-
-    int FindTheAssociatedIndexForThisIdentifierInTheSourceDiscoverabilityArray(
-        StringName identifierToFindMatchesFor,
-        Span<TechUpgradeInfo> sourceUpgradesArray)
-    {
-        for (int iterationStep = 0; iterationStep < sourceUpgradesArray.Length; ++iterationStep)
-        {
-            if (sourceUpgradesArray[iterationStep].Id != identifierToFindMatchesFor)
-                continue;
-
-            return iterationStep;
-        }
-
-        return 0;
     }
 
     /// Events ///

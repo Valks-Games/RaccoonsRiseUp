@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://ResourceEditor/Scripts/UICellModifier.cs" id="1_8wecc"]
 [ext_resource type="PackedScene" uid="uid://drc1awb0pn3u2" path="res://ResourceEditor/Scenes/Components/ui_comp_stepper.tscn" id="1_lv7wm"]
-[ext_resource type="Resource" uid="uid://7lt0byaqcwg6" path="res://Resources/res_shared_game_state.tres" id="2_aidq8"]
+[ext_resource type="Resource" uid="uid://cju7250tyfid5" path="res://Resources/res_shared_game_state.tres" id="2_aidq8"]
 
 [node name="HBoxContainer" type="HBoxContainer"]
 offset_right = 347.0

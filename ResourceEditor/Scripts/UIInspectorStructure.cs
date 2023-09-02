@@ -90,9 +90,10 @@ public sealed partial class UIInspectorStructure : BaseInspectorView, IEditParam
 
     void OnIdentifierChanged(string value)
     {
-        fieldIdentifier.ReleaseFocus();
         currentData.Identifier = value;
         Finalise();
+
+        fieldName.GrabFocus();
     }
 
     void OnNameChanged(string value)

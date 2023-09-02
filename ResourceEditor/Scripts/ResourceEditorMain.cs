@@ -25,6 +25,9 @@ public sealed partial class ResourceEditorMain : Control, IDataListViewDataProvi
 
     public override void _Ready()
     {
+        Global globals = GetNode<Global>(Global.GetNodePath);
+        globals.OnQuitRequest += OnQuit;
+
         gameState = ResourceLoader
         .Load<GameState>(pathResourceGameState);
 
@@ -109,25 +112,7 @@ public sealed partial class ResourceEditorMain : Control, IDataListViewDataProvi
             => OnItemSelected(jobsListView, idx);
     }
 
-    async void InitialUpdate()
-    {
-        await GUtils.WaitOneFrame(this);
-
-        techUpgradesListView.Update();
-        structuresListView.Update();
-        jobsListView.Update();
-    }
-
-    void WriteToDisk()
-    {
-        gameState._SetJobData(mutableJobs.ToArray());
-        techDataService._SetUpgrades(mutableUpgrades.ToArray());
-        structureDataService._SetStructures(mutableStructures.ToArray());
-
-        ResourceSaver.Save(gameState, pathResourceGameState);
-        ResourceSaver.Save(techDataService, pathResourceTechDataService);
-        ResourceSaver.Save(structureDataService, pathResourceStructureDataService);
-    }
+    /// Events ///
 
     void OnItemSelected(UIDataListView listView, int idx)
     {
@@ -147,6 +132,12 @@ public sealed partial class ResourceEditorMain : Control, IDataListViewDataProvi
         }
 
         inspector.SetContents(data, idx, this);
+    }
+
+    void OnQuit()
+    {
+        inspector.Finalise();
+        WriteToDisk();
     }
 
     /// Data List Provider ///
@@ -224,6 +215,8 @@ public sealed partial class ResourceEditorMain : Control, IDataListViewDataProvi
         {
             mutableStructures.RemoveAt(index);
         }
+
+        inspector.SetContents(null, -1, this);
     }
 
     /// Context Writer ///
@@ -232,16 +225,25 @@ public sealed partial class ResourceEditorMain : Control, IDataListViewDataProvi
     {
         if (data is TechUpgradeInfo upgradeInfo)
         {
+            if (!UpdateIndexInRange(mutableUpgrades, index))
+                return;
+
             mutableUpgrades[index] = upgradeInfo;
             techUpgradesListView.Update();
         }
         else if (data is StructureDataInfo structureInfo)
         {
+            if (!UpdateIndexInRange(mutableStructures, index))
+                return;
+
             mutableStructures[index] = structureInfo;
             structuresListView.Update();
         }
         else if (data is JobData jobData)
         {
+            if (!UpdateIndexInRange(mutableJobs, index))
+                return;
+
             mutableJobs[index] = jobData;
         }
 
@@ -253,5 +255,32 @@ public sealed partial class ResourceEditorMain : Control, IDataListViewDataProvi
     public void EditorListTechUpgradeIds(ref Span<TechUpgradeInfo> upgrades)
     {
         upgrades = CollectionsMarshal.AsSpan(mutableUpgrades);
+    }
+
+    /// Helpers ///
+
+    async void InitialUpdate()
+    {
+        await GUtils.WaitOneFrame(this);
+
+        techUpgradesListView.Update();
+        structuresListView.Update();
+        jobsListView.Update();
+    }
+
+    void WriteToDisk()
+    {
+        gameState._SetJobData(mutableJobs.ToArray());
+        techDataService._SetUpgrades(mutableUpgrades.ToArray());
+        structureDataService._SetStructures(mutableStructures.ToArray());
+
+        ResourceSaver.Save(gameState, pathResourceGameState);
+        ResourceSaver.Save(techDataService, pathResourceTechDataService);
+        ResourceSaver.Save(structureDataService, pathResourceStructureDataService);
+    }
+
+    bool UpdateIndexInRange<T>(List<T> targetList, int index)
+    {
+        return index >= 0 && index < targetList.Count;
     }
 }

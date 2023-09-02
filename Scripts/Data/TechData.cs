@@ -1,27 +1,5 @@
 ﻿namespace RRU;
 
-public partial class Game
-{
-    [Obsolete]
-    public static Dictionary<TechType, TechData> TechData { get; } = new()
-    {
-        {
-            TechType.WoodEffeciency, new TechData
-            {
-                ImagePath = "wood-beam",
-                Description = "Increase wood production"
-            }
-        },
-        {
-            TechType.ResearchEffeciency, new TechData
-            {
-                ImagePath = "archive-research",
-                Description = "Increase research production"
-            }
-        }
-    };
-}
-
 [Obsolete]
 public class TechData
 {

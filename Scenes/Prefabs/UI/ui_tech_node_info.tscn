@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://ccyv0c2rj7ly1"]
 
 [ext_resource type="Script" path="res://Scripts/UI/TechNodeDetails.cs" id="1_0kyk4"]
-[ext_resource type="Resource" uid="uid://7lt0byaqcwg6" path="res://Resources/res_shared_game_state.tres" id="2_1ahn6"]
-[ext_resource type="Resource" uid="uid://bq25wiv36tld1" path="res://Resources/res_shared_tech_data_service.tres" id="3_khb3p"]
+[ext_resource type="Resource" uid="uid://cju7250tyfid5" path="res://Resources/res_shared_game_state.tres" id="2_1ahn6"]
+[ext_resource type="Resource" uid="uid://cbxt1upmcsdku" path="res://Resources/res_shared_tech_data_service.tres" id="3_khb3p"]
 
 [node name="TechNodeInfo" type="Panel"]
 offset_right = 300.0
@@ -34,20 +34,10 @@ layout_mode = 2
 size_flags_horizontal = 4
 expand_mode = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Type" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="Type" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Display Name"
-
-[node name="Description" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 1
-text = "Description text"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -57,6 +47,13 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 30
+
+[node name="Description" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+text = "Description text"
+autowrap_mode = 3
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
 modulate = Color(0.894118, 0.894118, 0.894118, 1)

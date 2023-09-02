@@ -70,12 +70,7 @@ public partial class UITech : SubViewport
 
         for (int i = 0; i < upgrades.Length; ++i)
         {
-            AddTech(
-                id: upgrades[i].Id,
-                techType: upgrades[i].UpgradeType,
-                x: upgrades[i].Position.X,
-                y: upgrades[i].Position.Y
-            );
+            AddTech(upgrades[i]);
         }
     }
 
@@ -109,31 +104,21 @@ public partial class UITech : SubViewport
         HideDetails();
     }
 
-    void AddTech(StringName id, TechType techType, int x, int y)
+    void AddTech(TechUpgradeInfo info)
     {
-        var techNode = Prefabs.TechNode.Instantiate<UITechNode>();
-        TechInfo techInfo = TechInfo.FromType(id, techType);
-
-        techNode.ClickedOnNode += techInfo =>
-        {
-            // Camera moves to the tech node that was clicked
-            tweenCamera = new GTween(camera);
-            tweenCamera.Animate("position", techInfo.Position, 0.5)
-                .SetTrans(Tween.TransitionType.Sine);
-
-            // Animate overlay to a nice dark transparent background
-            tweenOverlayColor = new GTween(overlay);
-            tweenOverlayColor.Animate("color", new Color(0, 0, 0, 0.8f), 0.2);
-        };
-
+        UITechNode techNode = Prefabs.TechNode.Instantiate<UITechNode>();
         AddChild(techNode);
+
+        techNode.Setup(info);
+
+        techNode.OnClicked += (TechUpgradeInfo upgradeInfo) =>
+            OnTechNodeClicked(techNode, upgradeInfo);
+
         techNodes.Add(techNode);
 
         // Open the details view when a tech node has been activated
-        techNode.ClickedOnNode += detailsView.OnShowDetailRequested;
+        techNode.OnClicked += detailsView.SetUpgradeInfo;
         techData.ResearchStateUpdated += techNode.OnResearchStateChanged;
-
-        techNode.Setup(techInfo);
 
         // Must do this after AddChild(...) otherwise techNode.Size will
         // not be accurate
@@ -141,16 +126,34 @@ public partial class UITech : SubViewport
         var spacing = Vector2.One * techNodeSpacing;
 
         techNode.Position =
-            new Vector2(x, y) * (techNode.Size + spacing) - offset;
+            info.Position * (techNode.Size + spacing) - offset;
 
         // Set node state
-        TechNodeState nodeState = techData.IsResearched(id) ?
+        TechNodeState nodeState = techData.IsResearched(info.Id) ?
             TechNodeState.Researched : TechNodeState.Locked;
 
-        if (nodeState == TechNodeState.Locked && techData.IsUnlocked(id))
+        if (nodeState == TechNodeState.Locked && techData.IsUnlocked(info.Id))
             nodeState = TechNodeState.Unlocked;
 
         techNode.SetResearchState(nodeState);
+    }
+
+    void OnTechNodeClicked(UITechNode techNode, TechUpgradeInfo techInfo)
+    {
+        // Camera moves to the tech node that was clicked
+        tweenCamera = new GTween(camera);
+
+        Vector2 positionF = techInfo.Position;
+
+        tweenCamera.Animate(
+            prop: Control.PropertyName.Position.ToString(),
+            finalValue: positionF,
+            duration: 0.5f)
+        .SetTrans(Tween.TransitionType.Sine);
+
+        // Animate overlay to a nice dark transparent background
+        tweenOverlayColor = new GTween(overlay);
+        tweenOverlayColor.Animate("color", new Color(0, 0, 0, 0.8f), 0.2);
     }
 
     async void HideDetails()

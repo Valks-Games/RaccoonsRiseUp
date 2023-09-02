@@ -9,14 +9,14 @@
 script = ExtResource("1_mrkj6")
 Job = 0
 ResourceType = 0
-GatherRate = 3.0
+GatherRate = 5.0
 GatherAmount = 1.0
 
 [sub_resource type="Resource" id="Resource_g02h5"]
 script = ExtResource("1_mrkj6")
 Job = 1
 ResourceType = 1
-GatherRate = 2.5
+GatherRate = 3.0
 GatherAmount = 1.0
 
 [resource]

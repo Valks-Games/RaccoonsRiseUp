@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://cq8o1d7md713a"]
 
 [ext_resource type="Script" path="res://ResourceEditor/Scripts/UICellCost.cs" id="1_ujy4c"]
-[ext_resource type="Resource" uid="uid://7lt0byaqcwg6" path="res://Resources/res_shared_game_state.tres" id="2_t1amo"]
+[ext_resource type="Resource" uid="uid://cju7250tyfid5" path="res://Resources/res_shared_game_state.tres" id="2_t1amo"]
 [ext_resource type="PackedScene" uid="uid://drc1awb0pn3u2" path="res://ResourceEditor/Scenes/Components/ui_comp_stepper.tscn" id="3_gvmo4"]
 
 [node name="CostCell" type="HBoxContainer"]
