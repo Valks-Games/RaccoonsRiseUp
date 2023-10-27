@@ -1,9 +1,5 @@
 https://github.com/valkyrienyanko/RaccoonsRiseUp/assets/6277739/471b2d93-373a-4e8e-bfb0-e7d9b7d598fe
 
-https://github.com/valkyrienyanko/RaccoonsRiseUp/assets/6277739/8513bf82-a8f4-4abd-9a51-2447b479670b
-
-https://github.com/valkyrienyanko/RaccoonsRiseUp/assets/6277739/6c40ee1d-ba0c-4c49-86ef-4990908ef7f7
-
 ## About
 Text-based game taking inspiration from Kittens Game and Forager.
 
